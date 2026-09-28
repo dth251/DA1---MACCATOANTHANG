@@ -46,7 +46,7 @@ const OwnerContact = {
       try {
         await navigator.clipboard.writeText(text);
         return true;
-      } catch (e) {}
+      } catch (e) { }
     }
     try {
       const textarea = document.createElement('textarea');

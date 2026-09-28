@@ -3,7 +3,7 @@
   const $ = selector => document.querySelector(selector);
   const form = $('#contact-form');
   let messageText = '';
-  const topics = {general:'Thông tin sản phẩm',order:'Hỗ trợ đơn hàng',partnership:'Hợp tác / phân phối',feedback:'Góp ý khác'};
+  const topics = { general: 'Thông tin sản phẩm', order: 'Hỗ trợ đơn hàng', partnership: 'Hợp tác / phân phối', feedback: 'Góp ý khác' };
   form.addEventListener('submit', event => {
     event.preventDefault();
     $('#contact-error').textContent = '';
@@ -15,7 +15,7 @@
       form.elements.namedItem(get('name').length < 2 ? 'name' : 'message').focus();
       return;
     }
-    if (get('phone') && !/^\+?\d{9,15}$/.test(get('phone').replace(/ /g,''))) {
+    if (get('phone') && !/^\+?\d{9,15}$/.test(get('phone').replace(/ /g, ''))) {
       $('#contact-error').textContent = 'Số điện thoại cần có 9–15 chữ số, có thể bắt đầu bằng +.';
       form.elements.namedItem('phone').focus();
       return;

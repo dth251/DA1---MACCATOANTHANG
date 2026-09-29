@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
-const source = fs.readFileSync(path.join(__dirname, '..', 'request-api.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '..', 'js', 'request-api.js'), 'utf8');
 async function run() {
   const storage = new Map(), calls = [];
   let fail = true;

@@ -1,6 +1,0 @@
-[
-  { "id": "natural", "name": "Macca nguyên vỏ sấy mộc", "weight": "500 g", "price": 185000 },
-  { "id": "kernel", "name": "Nhân macca nguyên vị", "weight": "250 g", "price": 225000 },
-  { "id": "roasted", "name": "Macca nguyên vỏ rang", "weight": "500 g", "price": 195000 },
-  { "id": "gift", "name": "Hộp quà Mộc An", "weight": "2 hộp × 250 g", "price": 485000 }
-]

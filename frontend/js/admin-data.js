@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 window.MaccaAdmin = (() => {
   const key = 'macca-toan-thang-admin-v1';
   const categories = { shell: 'Macca nguyên vỏ', kernel: 'Nhân macca', gift: 'Quà tặng' };
@@ -15,14 +15,71 @@ window.MaccaAdmin = (() => {
   function validState(s) {
     return s && s.version === 1 && integer(s.revision, 0, Number.MAX_SAFE_INTEGER) && Array.isArray(s.products) && s.products.length <= 1000 && s.products.every(validProduct) && new Set(s.products.map(p => p.id)).size === s.products.length && Array.isArray(s.orders) && s.orders.length <= 10000 && s.orders.every(validOrder) && new Set(s.orders.map(o => o.id)).size === s.orders.length;
   }
-  const initial = () => ({ version: 1, revision: 0, products: Macca.products.map(p => ({ ...p, stock: null, active: true })), orders: [] });
+    const defaultOrders = [
+    {
+      id: 'DH-2609-8801',
+      createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+      status: 'pending',
+      customer: {
+        name: 'Nguyễn Văn An',
+        phone: '0912345678',
+        email: 'an.nguyen@gmail.com',
+        address: '123 Lê Lợi, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh'
+      },
+      items: [
+        { id: 'macca-natural', name: 'Macca sấy mộc', weight: '500g', price: 185000, quantity: 2 },
+        { id: 'macca-kernel', name: 'Nhân macca', weight: '300g', price: 210000, quantity: 1 }
+      ],
+      shipping: 30000,
+      note: 'Giao hàng trong giờ hành chính giúp tôi.'
+    },
+    {
+      id: 'DH-2609-8802',
+      createdAt: new Date(Date.now() - 3600000 * 26).toISOString(),
+      status: 'shipping',
+      customer: {
+        name: 'Phạm Thu Trang',
+        phone: '0933456789',
+        email: 'thutrang@gmail.com',
+        address: '45 Nguyễn Huệ, Quận Hải Châu, TP. Đà Nẵng'
+      },
+      items: [
+        { id: 'macca-roasted', name: 'Macca rang', weight: '500g', price: 195000, quantity: 3 }
+      ],
+      shipping: 45000,
+      note: 'Đóng gói bọc xốp cẩn thận giúp shop nhé.'
+    },
+    {
+      id: 'DH-2609-8803',
+      createdAt: new Date(Date.now() - 3600000 * 50).toISOString(),
+      status: 'completed',
+      customer: {
+        name: 'Hoàng Minh Tuấn',
+        phone: '0978112233',
+        email: 'tuan.hoang@gmail.com',
+        address: '88 Cầu Giấy, Phường Dịch Vọng, TP. Hà Nội'
+      },
+      items: [
+        { id: 'macca-gift', name: 'Hộp quà Mộc An', weight: 'Hộp 2 hũ', price: 450000, quantity: 2 }
+      ],
+      shipping: 30000,
+      note: 'Đã thanh toán đủ khi nhận hàng.'
+    }
+  ];
+  const initial = () => ({ version: 1, revision: 0, products: Macca.products.map(p => ({ ...p, stock: null, active: true })), orders: defaultOrders });
   let snapshot = initial();
   let storageToken = null;
   let loadError = '';
   function reload() {
     try {
       const raw = localStorage.getItem(key);
-      const data = raw === null ? initial() : JSON.parse(raw);
+      let data;
+      if (raw === null || /[\uFFFD]|Ã[¡\s]|áº|á»|Ä‘/.test(raw)) {
+        data = initial();
+        try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+      } else {
+        data = JSON.parse(raw);
+      }
       if (!validState(data)) throw new Error('invalid');
       snapshot = data;
       storageToken = raw;

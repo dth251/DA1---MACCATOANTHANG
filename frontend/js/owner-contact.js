@@ -2,14 +2,22 @@
 
 /**
  * THÔNG TIN LIÊN HỆ MACCA TOÀN THẮNG
- * Thay đổi thông tin tại đây để tự động cập nhật toàn bộ kênh liên hệ trên tất cả các trang.
+ * Tự động đồng bộ với Cài đặt web khách hàng từ trang quản trị admin.
  */
+const SETTINGS_KEY = 'macca-toan-thang-web-settings-v1';
+let savedWebSettings = null;
+try {
+  const raw = localStorage.getItem(SETTINGS_KEY);
+  if (raw) savedWebSettings = JSON.parse(raw);
+} catch {}
+
 const OwnerContact = {
-  phone: '0988245476',                // Số hotline gọi điện
-  phoneDisplay: '0988 245 476',        // Định dạng số hiển thị cho khách hàng
-  zalo: 'https://zalo.me/0988245476',   // Đường dẫn mở chat Zalo
-  facebook: 'https://facebook.com/maccatoanthang', // Đường dẫn Fanpage Facebook
-  gmail: 'maccatoanthang@gmail.com'    // Địa chỉ Gmail nhận thư
+  phone: savedWebSettings?.phone || '0988245476',
+  phoneDisplay: savedWebSettings?.phoneDisplay || '0988 245 476',
+  zalo: savedWebSettings?.zalo || 'https://zalo.me/0988245476',
+  facebook: savedWebSettings?.facebook || 'https://facebook.com/maccatoanthang',
+  gmail: savedWebSettings?.email || 'maccatoanthang@gmail.com',
+  settings: savedWebSettings
 };
 
 (() => {
@@ -131,9 +139,28 @@ const OwnerContact = {
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDock);
-  } else {
+  function initAnnouncement() {
+    if (!savedWebSettings || savedWebSettings.announcementEnable !== 'true' || !savedWebSettings.announcementText) return;
+    if (document.querySelector('.top-announcement-bar') || sessionStorage.getItem('macca-hide-announcement')) return;
+    const bar = document.createElement('div');
+    bar.className = 'top-announcement-bar';
+    const linkHtml = savedWebSettings.announcementLink ? `<a href="${savedWebSettings.announcementLink}">Tìm hiểu thêm ↗</a>` : '';
+    bar.innerHTML = `<span>${savedWebSettings.announcementText}</span> ${linkHtml} <button type="button" class="announcement-close" aria-label="Đóng thông báo">×</button>`;
+    bar.querySelector('.announcement-close')?.addEventListener('click', () => {
+      bar.remove();
+      sessionStorage.setItem('macca-hide-announcement', '1');
+    });
+    document.body.prepend(bar);
+  }
+
+  function start() {
     initDock();
+    initAnnouncement();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
   }
 })();

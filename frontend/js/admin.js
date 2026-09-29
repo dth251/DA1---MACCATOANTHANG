@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 (() => {
   const $ = selector => document.querySelector(selector);
   const api = MaccaAdmin;
@@ -18,6 +18,7 @@
     info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6 M12 7h.01"/>',
     search: '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
     wallet: '<rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 8h18 M16 12h5v5h-5z"/>',
+    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   };
   const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.box}</svg>`;
   document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = icon(el.dataset.icon); });
@@ -80,13 +81,50 @@
     renderOverview(); renderProducts(); renderOrders(); renderCustomers();
   }
   const pages = {
-    inbox: ['Yêu cầu từ khách', 'Tiếp nhận đơn đặt hàng, yêu cầu tư vấn và lời nhắn từ website.', 'Yêu cầu từ khách'],
-    overview: ['Tổng quan cửa hàng', 'Theo dõi và chăm chút cửa hàng của bạn mỗi ngày.', 'Tổng quan'],
-    products: ['Quản lý sản phẩm', 'Chỉnh sửa bộ sưu tập, giá bán và tồn kho trên thiết bị này.', 'Sản phẩm'],
+    overview: ['Tổng quan', 'Theo dõi nhanh tình hình sản phẩm và đơn hàng tại cửa hàng.', 'Tổng quan'],
+    products: ['Danh sách sản phẩm', 'Quản lý thông tin, giá bán và trạng thái của từng món.', 'Sản phẩm'],
     orders: ['Quản lý đơn hàng', 'Tạo đơn thủ công và theo dõi quá trình xử lý.', 'Đơn hàng'],
+    inbox: ['Tư vấn & Lời nhắn', 'Tiếp nhận yêu cầu tư vấn và lời nhắn liên hệ từ khách hàng.', 'Tư vấn & Lời nhắn'],
     customers: ['Khách hàng', 'Thông tin liên hệ được tổng hợp từ những đơn hàng của bạn.', 'Khách hàng'],
     content: ['Nội dung website', 'Xem các bài viết và trang giới thiệu đang có trên website.', 'Nội dung'],
+    settings: ['Cài đặt web khách hàng', 'Tùy chỉnh thông tin liên hệ, thanh thông báo và cấu hình dịch vụ trên website.', 'Cài đặt web'],
   };
+  const SETTINGS_KEY = 'macca-toan-thang-web-settings-v1';
+  const defaultWebSettings = {
+    brandName: 'Macca Toàn Thắng',
+    slogan: 'Từ hạt nhỏ, nuôi điều lớn · Tinh túy từ thiên nhiên',
+    phone: '0988245476',
+    phoneDisplay: '0988 245 476',
+    zalo: 'https://zalo.me/0988245476',
+    facebook: 'https://facebook.com/maccatoanthang',
+    email: 'maccatoanthang@gmail.com',
+    address: 'Sơn Lương, Phú Thọ',
+    hours: '08:00 – 21:00 hàng ngày',
+    announcementEnable: 'true',
+    announcementText: '🌿 Chào mừng bạn đến với Macca Toàn Thắng — Nông sản mộc lành từ Sơn Lương, Phú Thọ. Miễn phí giao hàng cho đơn từ 500k!',
+    announcementLink: 'cau-chuyen.html',
+    shippingStandard: 30000,
+    shippingExpress: 45000,
+    freeShippingThreshold: 500000,
+    storeStatus: 'open',
+    storeNotice: 'Đơn hàng sẽ được liên hệ xác nhận trong giờ làm việc (08:00 - 21:00).'
+  };
+  function getWebSettings() {
+    try {
+      const raw = localStorage.getItem(SETTINGS_KEY);
+      if (raw) return { ...defaultWebSettings, ...JSON.parse(raw) };
+    } catch {}
+    return { ...defaultWebSettings };
+  }
+  function populateWebSettingsForm() {
+    const s = getWebSettings();
+    const form = $('#web-settings-form');
+    if (!form) return;
+    for (const [key, val] of Object.entries(s)) {
+      const field = form.elements.namedItem(key);
+      if (field) field.value = String(val ?? '');
+    }
+  }
   function navigate(focus = false) {
     const raw = location.hash.slice(1);
     const page = Object.hasOwn(pages, raw) ? raw : 'overview';
@@ -94,11 +132,14 @@
     document.querySelectorAll('[data-page]').forEach(link => {
       if (link.dataset.page === page) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
     });
-    $('#page-title').textContent = pages[page][0];
-    $('#page-description').textContent = pages[page][1];
-    $('#breadcrumb-current').textContent = pages[page][2];
-    document.title = pages[page][2] + ' — Quản trị Macca Toàn Thắng';
-    if (focus) $('#admin-main').focus({ preventScroll: true });
+    const info = pages[page] || pages.overview;
+    $('#page-title').textContent = info[0];
+    $('#page-description').textContent = info[1];
+    $('#breadcrumb-current').textContent = info[2];
+    document.title = info[2] + ' — Quản trị Macca Toàn Thắng';
+    if (page === 'settings') populateWebSettingsForm();
+    if (page === 'inbox' && typeof window.refreshMaccaInbox === 'function') window.refreshMaccaInbox();
+    if (focus) $('#admin-main')?.focus({ preventScroll: true });
   }
   function openProduct(id) {
     const product = state.products.find(p => p.id === id);
@@ -200,7 +241,54 @@
   for (const id of ['product-search', 'product-category']) $('#' + id).addEventListener(id.includes('search') ? 'input' : 'change', renderProducts);
   for (const id of ['order-search', 'order-filter']) $('#' + id).addEventListener(id.includes('search') ? 'input' : 'change', renderOrders);
   $('#customer-search').addEventListener('input', renderCustomers);
+  const webSettingsForm = $('#web-settings-form');
+  if (webSettingsForm) {
+    webSettingsForm.addEventListener('submit', event => {
+      event.preventDefault();
+      if ($('#settings-error')) $('#settings-error').textContent = '';
+      const form = event.currentTarget;
+      const data = new FormData(form);
+      const updated = {
+        brandName: String(data.get('brandName') || '').trim() || defaultWebSettings.brandName,
+        slogan: String(data.get('slogan') || '').trim(),
+        phone: String(data.get('phone') || '').trim().replace(/\s/g, ''),
+        phoneDisplay: String(data.get('phoneDisplay') || '').trim(),
+        zalo: String(data.get('zalo') || '').trim(),
+        facebook: String(data.get('facebook') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        address: String(data.get('address') || '').trim(),
+        hours: String(data.get('hours') || '').trim(),
+        announcementEnable: String(data.get('announcementEnable') || 'false'),
+        announcementText: String(data.get('announcementText') || '').trim(),
+        announcementLink: String(data.get('announcementLink') || '').trim(),
+        shippingStandard: Number(data.get('shippingStandard')) || 30000,
+        shippingExpress: Number(data.get('shippingExpress')) || 45000,
+        freeShippingThreshold: Number(data.get('freeShippingThreshold')) || 0,
+        storeStatus: String(data.get('storeStatus') || 'open'),
+        storeNotice: String(data.get('storeNotice') || '').trim(),
+      };
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(updated));
+        toast('Đã lưu cài đặt web khách hàng thành công!');
+      } catch (err) {
+        if ($('#settings-error')) $('#settings-error').textContent = 'Không thể lưu cài đặt: ' + err.message;
+      }
+    });
+  }
+  const resetSettingsBtn = $('#reset-settings-button');
+  if (resetSettingsBtn) {
+    resetSettingsBtn.addEventListener('click', () => {
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(defaultWebSettings));
+        populateWebSettingsForm();
+        toast('Đã khôi phục cài đặt web khách hàng về mặc định.');
+      } catch (err) {
+        if ($('#settings-error')) $('#settings-error').textContent = err.message;
+      }
+    });
+  }
   window.addEventListener('hashchange', () => navigate(true));
+  window.addEventListener('macca:new-order', () => { state = api.reload(); render(); });
   window.addEventListener('storage', event => {
     if (event.key !== api.key && event.key !== null) return;
     document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
@@ -209,5 +297,12 @@
   });
   $('#today').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   $('#article-grid').innerHTML = MaccaJournal.map(article => `<article><img src="${escape(article.image)}" alt="" width="250" height="175"><div><span class="eyebrow">${escape(article.label)}</span><h3>${escape(article.title)}</h3><p>${escape(article.description)}</p><a class="text-link" href="goc-macca.html?article=${encodeURIComponent(article.slug)}">Xem bài viết ↗</a></div></article>`).join('');
+  // Ensure sidebar links activate navigation immediately on click
+  document.querySelectorAll('.sidebar nav a[data-page]').forEach(link => {
+    link.addEventListener('click', () => {
+      setTimeout(() => navigate(false), 0);
+    });
+  });
+
   render(); navigate();
 })();

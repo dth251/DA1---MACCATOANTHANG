@@ -1,40 +1,248 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#243f30">
-  <meta name="description" content="Khám phá bộ sưu tập macca Toàn Thắng: macca nguyên vỏ, nhân macca và quà tặng. Hương vị mộc mạc cho những khoảnh khắc mỗi ngày.">
+  <meta name="description"
+    content="Khám phá bộ sưu tập macca Toàn Thắng: macca nguyên vỏ, nhân macca và quà tặng. Hương vị mộc mạc cho những khoảnh khắc mỗi ngày.">
   <title>Macca Toàn Thắng — Tinh túy từ thiên nhiên</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <script src="store.js" defer></script>
-  <script src="journal-data.js" defer></script><script src="app.js" defer></script>
-<link rel="stylesheet" href="owner-contact.css"><script src="owner-contact.js" defer></script></head>
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/auth.js" defer></script>
+  <script src="js/store.js" defer></script>
+  <script src="js/journal-data.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <link rel="stylesheet" href="css/owner-contact.css">
+  <script src="js/owner-contact.js" defer></script>
+</head>
+
 <body>
   <a class="skip-link" href="#main">Đến nội dung chính</a>
-  <div class="announcement">Một chút an lành, từ món quà của thiên nhiên <span>KHÁM PHÁ MACCA VIỆT <span aria-hidden="true">↗</span></span></div>
-  <header class="header">
-    <a class="brand" href="#" aria-label="Macca Toàn Thắng — Trang chủ"><span class="brand-mark" aria-hidden="true">❧</span><span>macca<small>TOÀN THẮNG</small></span></a>
-    <nav aria-label="Điều hướng chính"><a class="active" href="#main">Trang chủ</a><a href="san-pham.html">Sản phẩm</a><a href="cau-chuyen.html">Câu chuyện của chúng tôi</a><a href="goc-macca.html">Góc macca</a><a href="lien-he.html">Liên hệ</a></nav>
-    <div class="header-actions"><button class="icon-button" id="search-toggle" aria-label="Tìm kiếm sản phẩm" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><span class="divider"></span><a class="cart-button" href="gio-hang.html"><svg viewBox="0 0 24 24"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg><span>Giỏ hàng</span><b id="cart-count">0</b></a></div>
+  <header class="header header-with-auth">
+    <a class="brand" href="#" aria-label="Macca Toàn Thắng — Trang chủ"><img class="brand-logo"
+        src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64"></a>
+    <nav aria-label="Điều hướng chính"><a class="active" href="#main">Trang chủ</a><a href="san-pham.html">Sản
+        phẩm</a><a href="cau-chuyen.html">Câu chuyện của chúng tôi</a><a href="goc-macca.html">Góc macca</a><a
+        href="lien-he.html">Liên hệ</a></nav>
+    <div class="header-actions"><button class="icon-button" id="search-toggle" aria-label="Tìm kiếm sản phẩm"
+        aria-expanded="false"><svg viewBox="0 0 24 24">
+          <circle cx="10.5" cy="10.5" r="6.5" />
+          <path d="m16 16 5 5" />
+        </svg></button><span class="divider"></span><a class="cart-button" href="gio-hang.html"><svg
+          viewBox="0 0 24 24">
+          <path d="M5 7h14l1 14H4L5 7Z" />
+          <path d="M8 8V6a4 4 0 0 1 8 0v2" />
+        </svg><span>Giỏ hàng</span><b id="cart-count">0</b></a>
+      <div class="header-auth" aria-label="Tài khoản">
+        <button class="auth-login" type="button" data-auth="login" aria-haspopup="dialog" aria-controls="auth-dialog">Đăng nhập</button>
+        <button class="auth-register" type="button" data-auth="register" aria-haspopup="dialog" aria-controls="auth-dialog">Đăng ký</button>
+      </div>
+    </div>
   </header>
-  <form class="search-bar" id="search-form" hidden role="search"><label for="search">Bạn đang tìm sản phẩm nào?</label><input id="search" type="search" placeholder="Tìm macca, nhân hạt, quà tặng…"><button class="button" type="submit">Tìm kiếm ↗</button></form>
+  <form class="search-bar" id="search-form" hidden role="search"><label for="search">Bạn đang tìm sản phẩm
+      nào?</label><input id="search" type="search" placeholder="Tìm macca, nhân hạt, quà tặng…"><button class="button"
+      type="submit">Tìm kiếm ↗</button></form>
   <main id="main">
     <section class="hero">
-      <div class="hero-copy"><p class="eyebrow"><span></span> THUẦN VỊ TỰ NHIÊN · TRỌN VẸN YÊU THƯƠNG</p><h1>Từ hạt macca,<br>gửi trao <em>điều lành.</em></h1><p class="hero-description">Vị béo bùi nguyên bản, giòn thơm trong từng hạt.<br>Một món quà giản dị từ thiên nhiên, cho bạn và<br class="desktop-break"> những người thương yêu.</p><div class="hero-buttons"><a class="button" href="san-pham.html">Khám phá sản phẩm <span>↗</span></a><a class="text-link" href="cau-chuyen.html">Câu chuyện của chúng tôi <span>→</span></a></div><div class="hero-footnote"><span class="small-leaf">❧</span><span>Chậm lại một chút.<br><strong>Thưởng thức những điều tự nhiên.</strong></span></div></div>
-      <div class="hero-photo"><img src="assets/macca-hero.png" alt="Hạt macca béo bùi trong bát gốm bên cành lá xanh" fetchpriority="high" width="1536" height="1024"><div class="photo-label"><span>THE GOODNESS OF NATURE</span><strong>Mộc mạc.<br>Và thật ngon.</strong><span>MACCA TOÀN THẮNG</span></div><div class="round-seal">TỪ THIÊN NHIÊN<span>❧</span>ĐẾN BẠN</div><span class="photo-caption">01 / HƯƠNG VỊ NGUYÊN BẢN</span></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> THUẦN VỊ TỰ NHIÊN · TRỌN VẸN YÊU THƯƠNG</p>
+        <h1>Từ hạt macca,<br>gửi trao <em>điều lành.</em></h1>
+        <p class="hero-description">Vị béo bùi nguyên bản, giòn thơm trong từng hạt.<br>Một món quà giản dị từ thiên
+          nhiên, cho bạn và<br class="desktop-break"> những người thương yêu.</p>
+        <div class="hero-buttons"><a class="button" href="san-pham.html">Khám phá sản phẩm <span>↗</span></a><a
+            class="text-link" href="cau-chuyen.html">Câu chuyện của chúng tôi <span>→</span></a></div>
+      </div>
+      <div class="hero-photo"><img src="assets/macca-hero.png" alt="Hạt macca béo bùi trong bát gốm bên cành lá xanh"
+          fetchpriority="high" width="1536" height="1024">
+        <div class="photo-label"><span>THE GOODNESS OF NATURE</span><strong>Mộc mạc.<br>Và thật
+            ngon.</strong><span>MACCA TOÀN THẮNG</span></div><span class="photo-caption">01 / HƯƠNG VỊ NGUYÊN BẢN</span>
+      </div>
     </section>
-    <section class="values" aria-label="Giá trị thương hiệu"><div><span class="value-icon">♧</span><p><strong>Trân trọng nguyên bản</strong><small>Để vị macca tự kể câu chuyện</small></p></div><div><span class="value-icon">◉</span><p><strong>Chăm chút từng lựa chọn</strong><small>Từ hạt nhỏ đến món quà trao tay</small></p></div><div><span class="value-icon">♢</span><p><strong>Quà tặng đầy tinh tế</strong><small>Gửi lời quan tâm theo cách riêng</small></p></div><div><span class="value-icon">♡</span><p><strong>Đồng hành mỗi ngày</strong><small>Một chút ngon lành trong nhịp sống</small></p></div></section>
-    <section class="section products" id="san-pham"><div class="section-heading"><div><p class="eyebrow">BỘ SƯU TẬP MACCA</p><h2>Chọn vị ngon, chọn điều lành.</h2></div><p>Từ món ăn nhẹ mỗi ngày đến món quà ý nghĩa,<br>tìm lựa chọn dành riêng cho bạn.</p></div><div class="catalog-toolbar"><div class="filters" role="group" aria-label="Danh mục sản phẩm"><button class="selected" data-filter="all" aria-pressed="true">Tất cả sản phẩm <span>4</span></button><button data-filter="shell" aria-pressed="false">Macca nguyên vỏ</button><button data-filter="kernel" aria-pressed="false">Nhân macca</button><button data-filter="gift" aria-pressed="false">Hộp quà tặng</button></div><label class="sort-label">Sắp xếp: <select id="sort" aria-label="Sắp xếp sản phẩm"><option value="featured">Nổi bật</option><option value="asc">Giá tăng dần</option><option value="desc">Giá giảm dần</option></select></label></div><p id="search-status" aria-live="polite" hidden></p><div class="product-grid" id="product-grid"></div><p style="text-align:center;margin-top:30px"><a class="button" href="san-pham.html">Xem tất cả sản phẩm <span>↗</span></a></p><p class="sample-note">Bộ sưu tập minh họa · Giá tham khảo cho bản thiết kế · Hình ảnh tạo bằng AI</p></section>
-    <section class="story section" id="cau-chuyen"><div class="story-image"><img src="assets/macca-hero.png" loading="lazy" alt="Macca nguyên hạt và nhân macca trên nền vải mộc" width="1536" height="1024"><span>Những điều tốt lành<br>bắt đầu từ một hạt nhỏ.</span></div><div class="story-copy"><p class="eyebrow">CÂU CHUYỆN TOÀN THẮNG</p><h2>Giữ vị mộc.<br>Trao chân thành.</h2><p>Chúng tôi yêu hương vị giản dị của macca: lớp vỏ cứng cáp bên ngoài, phần nhân giòn thơm, béo bùi bên trong. Một hạt nhỏ cũng có thể làm nên một khoảnh khắc đáng nhớ.</p><p>Toàn Thắng mong muốn mang tinh thần ấy đến mỗi bàn trà, mỗi giờ nghỉ và mỗi món quà. Để sự quan tâm được gửi trao từ những điều gần gũi nhất.</p><a class="text-link" href="cau-chuyen.html">Đọc câu chuyện của chúng tôi <span>↗</span></a></div></section>
-    <section class="gift-banner"><div><p class="eyebrow">MỘT MÓN QUÀ, NHIỀU YÊU THƯƠNG</p><h2>Gói vị ngon.<br>Gửi lời trân quý.</h2><p>Khám phá hộp quà macca dành cho người thân,<br>đối tác và những dịp thật đặc biệt.</p><a class="button button-light" href="san-pham.html?category=gift">Khám phá quà tặng <span>↗</span></a></div><div class="gift-art" aria-hidden="true"><div class="gift-box"><span>❧</span><strong>macca</strong><small>TOÀN THẮNG</small><p>A LITTLE GIFT OF NATURE</p></div><div class="gift-ribbon"></div><span class="gift-art-caption">THOUGHTFULLY CHOSEN. BEAUTIFULLY GIVEN.</span></div></section>
-    <section class="section journal" id="kien-thuc"><div class="section-heading"><div><p class="eyebrow">GÓC NHỎ MACCA</p><h2>Thêm một chút cảm hứng.</h2></div><a class="text-link" href="goc-macca.html">Xem tất cả bài viết ↗</a></div><div class="journal-grid"><a class="journal-card" href="goc-macca.html?article=thuong-thuc-macca"><span class="journal-number">01 / THƯỞNG THỨC</span><h3>Ba cách thưởng thức macca<br>cho ngày thêm thú vị</h3><span class="text-link">Đọc câu chuyện <span>↗</span></span></a><a class="journal-card" href="goc-macca.html?article=sua-chua-macca"><span class="journal-number">02 / GÓC BẾP</span><h3>Một bát sữa chua,<br>một chút giòn thơm</h3><span class="text-link">Đọc câu chuyện <span>↗</span></span></a><a class="journal-card" href="goc-macca.html?article=chon-qua-macca"><span class="journal-number">03 / QUÀ TẶNG</span><h3>Chọn một món quà<br>từ sự quan tâm</h3><span class="text-link">Đọc câu chuyện <span>↗</span></span></a></div></section>
-    <section class="contact section" id="lien-he"><div><p class="eyebrow">KẾT NỐI CÙNG CHÚNG TÔI</p><h2>Bạn cần một lựa chọn riêng?</h2><p>Quà tặng doanh nghiệp, đơn hàng số lượng lớn hoặc một lời nhắn.<br>Hãy tạo bản yêu cầu để trao đổi cùng Toàn Thắng.</p></div><a class="button" href="tu-van.html">Tạo yêu cầu tư vấn <span>↗</span></a><a class="text-link" href="lien-he.html">Liên hệ với chúng tôi ↗</a></section>
+    <section class="values" aria-label="Giá trị thương hiệu">
+      <div><span class="value-icon">♧</span>
+        <p><strong>Trân trọng nguyên bản</strong><small>Để vị macca tự kể câu chuyện</small></p>
+      </div>
+      <div><span class="value-icon">◉</span>
+        <p><strong>Chăm chút từng lựa chọn</strong><small>Từ hạt nhỏ đến món quà trao tay</small></p>
+      </div>
+      <div><span class="value-icon">♢</span>
+        <p><strong>Quà tặng đầy tinh tế</strong><small>Gửi lời quan tâm theo cách riêng</small></p>
+      </div>
+      <div><span class="value-icon">♡</span>
+        <p><strong>Đồng hành mỗi ngày</strong><small>Một chút ngon lành trong nhịp sống</small></p>
+      </div>
+    </section>
+    <section class="section products" id="san-pham">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">BỘ SƯU TẬP MACCA</p>
+          <h2>Chọn vị ngon, chọn điều lành.</h2>
+        </div>
+        <p>Từ món ăn nhẹ mỗi ngày đến món quà ý nghĩa,<br>tìm lựa chọn dành riêng cho bạn.</p>
+      </div>
+      <div class="catalog-toolbar">
+        <div class="filters" role="group" aria-label="Danh mục sản phẩm"><button class="selected" data-filter="all"
+            aria-pressed="true">Tất cả sản phẩm <span>4</span></button><button data-filter="shell"
+            aria-pressed="false">Macca nguyên vỏ</button><button data-filter="kernel" aria-pressed="false">Nhân
+            macca</button><button data-filter="gift" aria-pressed="false">Hộp quà tặng</button></div><label
+          class="sort-label">Sắp xếp: <select id="sort" aria-label="Sắp xếp sản phẩm">
+            <option value="featured">Nổi bật</option>
+            <option value="asc">Giá tăng dần</option>
+            <option value="desc">Giá giảm dần</option>
+          </select></label>
+      </div>
+      <p id="search-status" aria-live="polite" hidden></p>
+      <div class="product-grid" id="product-grid"></div>
+      <p style="text-align:center;margin-top:30px"><a class="button" href="san-pham.html">Xem tất cả sản phẩm
+          <span>↗</span></a></p>
+      <p class="sample-note">Bộ sưu tập minh họa · Giá tham khảo cho bản thiết kế · Hình ảnh tạo bằng AI</p>
+    </section>
+    <section class="story section" id="cau-chuyen">
+      <div class="story-image"><img src="assets/macca-hero.png" loading="lazy"
+          alt="Macca nguyên hạt và nhân macca trên nền vải mộc" width="1536" height="1024"><span>Những điều tốt
+          lành<br>bắt đầu từ một hạt nhỏ.</span></div>
+      <div class="story-copy">
+        <p class="eyebrow">CÂU CHUYỆN TOÀN THẮNG</p>
+        <h2>Giữ vị mộc.<br>Trao chân thành.</h2>
+        <p>Chúng tôi yêu hương vị giản dị của macca: lớp vỏ cứng cáp bên ngoài, phần nhân giòn thơm, béo bùi bên trong.
+          Một hạt nhỏ cũng có thể làm nên một khoảnh khắc đáng nhớ.</p>
+        <p>Toàn Thắng mong muốn mang tinh thần ấy đến mỗi bàn trà, mỗi giờ nghỉ và mỗi món quà. Để sự quan tâm được gửi
+          trao từ những điều gần gũi nhất.</p><a class="text-link" href="cau-chuyen.html">Đọc câu chuyện của chúng tôi
+          <span>↗</span></a>
+      </div>
+    </section>
+    <section class="gift-banner">
+      <div>
+        <p class="eyebrow">MỘT MÓN QUÀ, NHIỀU YÊU THƯƠNG</p>
+        <h2>Gói vị ngon.<br>Gửi lời trân quý.</h2>
+        <p>Khám phá hộp quà macca dành cho người thân,<br>đối tác và những dịp thật đặc biệt.</p><a
+          class="button button-light" href="san-pham.html?category=gift">Khám phá quà tặng <span>↗</span></a>
+      </div>
+      <div class="gift-art" aria-hidden="true">
+        <div class="gift-box"><img class="gift-box-logo" src="assets/logo-icon.png" alt="Macca Toàn Thắng" width="56"
+            height="56"><strong>macca</strong><small>TOÀN THẮNG</small>
+          <p>A LITTLE GIFT OF NATURE</p>
+        </div>
+        <div class="gift-ribbon"></div><span class="gift-art-caption">THOUGHTFULLY CHOSEN. BEAUTIFULLY GIVEN.</span>
+      </div>
+    </section>
+    <section class="section journal" id="kien-thuc">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">GÓC NHỎ MACCA</p>
+          <h2>Thêm một chút cảm hứng.</h2>
+        </div><a class="text-link" href="goc-macca.html">Xem tất cả bài viết ↗</a>
+      </div>
+      <div class="journal-grid"><a class="journal-card" href="goc-macca.html?article=thuong-thuc-macca"><span
+            class="journal-number">01 / THƯỞNG THỨC</span>
+          <h3>Ba cách thưởng thức macca<br>cho ngày thêm thú vị</h3><span class="text-link">Đọc câu chuyện
+            <span>↗</span></span>
+        </a><a class="journal-card" href="goc-macca.html?article=sua-chua-macca"><span class="journal-number">02 / GÓC
+            BẾP</span>
+          <h3>Một bát sữa chua,<br>một chút giòn thơm</h3><span class="text-link">Đọc câu chuyện <span>↗</span></span>
+        </a><a class="journal-card" href="goc-macca.html?article=chon-qua-macca"><span class="journal-number">03 / QUÀ
+            TẶNG</span>
+          <h3>Chọn một món quà<br>từ sự quan tâm</h3><span class="text-link">Đọc câu chuyện <span>↗</span></span>
+        </a></div>
+    </section>
+    <section class="contact section" id="lien-he">
+      <div>
+        <p class="eyebrow">KẾT NỐI CÙNG CHÚNG TÔI</p>
+        <h2>Bạn cần một lựa chọn riêng?</h2>
+        <p>Quà tặng doanh nghiệp, đơn hàng số lượng lớn hoặc một lời nhắn.<br>Hãy tạo bản yêu cầu để trao đổi cùng Toàn
+          Thắng.</p>
+      </div><a class="button" href="tu-van.html">Tạo yêu cầu tư vấn <span>↗</span></a><a class="text-link"
+        href="lien-he.html">Liên hệ với chúng tôi ↗</a>
+    </section>
   </main>
-  <aside class="owner-contact-dock" aria-label="Kênh liên hệ chủ sở hữu"><a class="dock-link dock-phone" data-contact-channel="phone" aria-label="Số điện thoại — chưa cập nhật" aria-disabled="true" title="Số điện thoại — chưa cập nhật"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 2.5h3.1l1.2 4.4-2 1.8a15.1 15.1 0 0 0 6.4 6.4l1.8-2 4.4 1.2v3.1a3 3 0 0 1-3.3 3A18.3 18.3 0 0 1 3.6 5.8a3 3 0 0 1 3-3.3Z"/></svg></a><a class="dock-link dock-zalo" data-contact-channel="zalo" aria-label="Zalo — chưa cập nhật" aria-disabled="true" title="Zalo — chưa cập nhật"><span aria-hidden="true" class="zalo-letter">Z</span></a><a class="dock-link dock-facebook" data-contact-channel="facebook" aria-label="Facebook — chưa cập nhật" aria-disabled="true" title="Facebook — chưa cập nhật"><span aria-hidden="true" class="facebook-letter">f</span></a><a class="dock-link dock-gmail" data-contact-channel="gmail" aria-label="Gmail — chưa cập nhật" aria-disabled="true" title="Gmail — chưa cập nhật"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 12 13l9-6.5V19H3V6.5Z"/><path d="M3 6.5 12 13l9-6.5"/></svg></a></aside><footer><div class="footer-main"><div><a class="brand" href="#"><span class="brand-mark">❧</span><span>macca<small>TOÀN THẮNG</small></span></a><p>Tinh túy từ thiên nhiên.<br>Chân thành trong từng món quà.</p></div><div><h3>Khám phá</h3><a href="san-pham.html">Sản phẩm macca</a><a href="cau-chuyen.html">Câu chuyện thương hiệu</a><a href="goc-macca.html">Góc macca</a></div><div><h3>Thông tin mua hàng</h3><button data-policy="shipping">Giao hàng & thanh toán</button><button data-policy="returns">Đổi trả sản phẩm</button><button data-policy="privacy">Thông tin riêng tư</button></div><div class="footer-note"><h3>Macca Toàn Thắng</h3><p>Website giới thiệu sản phẩm — bản mẫu.<br>Thông tin pháp nhân, địa chỉ và hotline<br>sẽ được bổ sung trước khi mở bán.</p></div></div><div class="footer-bottom"><span>© <span id="year"></span> Macca Toàn Thắng.</span><span>Được chăm chút từ những điều nhỏ nhất. <span aria-hidden="true">❧</span></span></div></footer>
-  <dialog id="detail-dialog"><div class="dialog-header"><span>MACCA TOÀN THẮNG</span><button class="icon-button" data-close aria-label="Đóng">✕</button></div><div id="detail-content"></div></dialog>
+  <aside class="owner-contact-dock" aria-label="Kênh liên hệ Macca Toàn Thắng"><a class="dock-link dock-phone"
+      href="tel:0988245476" data-contact-channel="phone" data-tooltip="Hotline: 0988 245 476"
+      aria-label="Gọi điện hotline 0988 245 476" title="Hotline: 0988 245 476"><img src="assets/phone-icon.png"
+        alt="Điện thoại" width="47" height="47"></a><a class="dock-link dock-zalo" href="https://zalo.me/0988245476"
+      target="_blank" rel="noopener noreferrer" data-contact-channel="zalo" data-tooltip="Chat Zalo: 0988 245 476"
+      aria-label="Nhắn tin qua Zalo Macca Toàn Thắng" title="Chat Zalo: 0988 245 476"><img src="assets/zalo-icon.png"
+        alt="Zalo" width="36" height="36"></a><a class="dock-link dock-facebook"
+      href="https://facebook.com/maccatoanthang" target="_blank" rel="noopener noreferrer"
+      data-contact-channel="facebook" data-tooltip="Facebook: Macca Toàn Thắng"
+      aria-label="Truy cập Fanpage Facebook Macca Toàn Thắng" title="Facebook: Macca Toàn Thắng"><img
+        src="assets/facebook-icon.png" alt="Facebook" width="47" height="47"></a><a class="dock-link dock-gmail"
+      href="mailto:maccatoanthang@gmail.com?subject=T%C6%B0%20v%E1%BA%A5n%20Macca%20To%C3%A0n%20Th%E1%BA%AFng"
+      data-contact-channel="gmail" data-tooltip="Gmail: maccatoanthang@gmail.com"
+      aria-label="Gửi email tới maccatoanthang@gmail.com" title="Gmail: maccatoanthang@gmail.com"><img
+        src="assets/gmail-icon.png" alt="Gmail" width="34" height="34"></a></aside>
+  <footer>
+    <div class="footer-main">
+      <div><a class="brand brand-footer" href="#" aria-label="Macca Toàn Thắng — Trang chủ"><img
+            class="footer-brand-logo" src="assets/logo.png" alt="Macca Toàn Thắng" width="95" height="90"></a>
+        <p>Tinh túy từ thiên nhiên.<br>Chân thành trong từng món quà.</p>
+      </div>
+      <div>
+        <h3>Khám phá</h3><a href="san-pham.html">Sản phẩm macca</a><a href="cau-chuyen.html">Câu chuyện thương
+          hiệu</a><a href="goc-macca.html">Góc macca</a>
+      </div>
+      <div>
+        <h3>Thông tin mua hàng</h3><button data-policy="shipping">Giao hàng & thanh toán</button><button
+          data-policy="returns">Đổi trả sản phẩm</button><button data-policy="privacy">Thông tin riêng tư</button>
+      </div>
+      <div class="footer-note">
+        <h3>Vườn Macca Toàn Thắng</h3>
+        <p>Cơ sở trồng & chế biến macca<br>Sơn Lương, Phú Thọ</p><a class="text-link"
+          href="https://maps.app.goo.gl/fCfLKrbhf9rNC3ce9" target="_blank" rel="noopener noreferrer"
+          style="font-size:13px;margin-top:6px;display:inline-flex;">Xem trên Google Maps ↗</a>
+      </div>
+    </div>
+    <div class="footer-map-card">
+      <div class="footer-map-header">
+        <div><span class="footer-map-tag"><svg viewBox="0 0 24 24" width="14" height="14"
+              style="vertical-align:-2px;margin-right:4px" fill="currentColor">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+            </svg>BẢN ĐỒ VỊ TRÍ</span>
+          <h3 class="footer-map-title">Vườn và Cơ Sở Macca Toàn Thắng</h3>
+          <p class="footer-map-desc">Sơn Lương, Phú Thọ — Kết nối và trải nghiệm không gian vườn macca vùng cao.</p>
+        </div><a class="button button-map" href="https://maps.app.goo.gl/fCfLKrbhf9rNC3ce9" target="_blank"
+          rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>Mở trên Google Maps <span>↗</span></a>
+      </div>
+      <div class="footer-map-frame"><iframe
+          src="https://maps.google.com/maps?q=21.5185659,104.9111844&amp;z=15&amp;output=embed" width="100%"
+          height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Bản đồ vị trí Vườn và Cơ Sở Macca Toàn Thắng"></iframe></div>
+    </div>
+    <div class="footer-bottom"><span>© <span id="year"></span> Macca Toàn Thắng.</span></div>
+  </footer>
+  <dialog id="detail-dialog">
+    <div class="dialog-header"><span>MACCA TOÀN THẮNG</span><button class="icon-button" data-close
+        aria-label="Đóng">✕</button></div>
+    <div id="detail-content"></div>
+  </dialog>
+  <dialog id="auth-dialog" aria-labelledby="auth-title" aria-describedby="auth-description">
+    <div class="dialog-header"><span>MACCA TOÀN THẮNG</span><button class="icon-button" type="button" data-close aria-label="Đóng">✕</button></div>
+    <h2 id="auth-title">Đăng nhập</h2>
+    <p id="auth-description">Chào mừng bạn đến với Macca Toàn Thắng.</p>
+    <form id="auth-form">
+      <div id="auth-name-field" hidden><label for="auth-name">Họ và tên</label><input id="auth-name" name="name" autocomplete="name" maxlength="100" disabled></div>
+      <div><label for="auth-email">Email</label><input id="auth-email" name="email" type="email" autocomplete="username" required maxlength="254"></div>
+      <div><label for="auth-password">Mật khẩu</label><input id="auth-password" name="password" type="password" autocomplete="current-password" required></div>
+      <div id="auth-confirm-field" hidden><label for="auth-confirm">Nhập lại mật khẩu</label><input id="auth-confirm" name="confirm-password" type="password" autocomplete="new-password" disabled></div>
+      <p class="auth-notice">Chức năng tài khoản đang được chuẩn bị. Biểu mẫu hiện chưa gửi hoặc lưu thông tin của bạn.</p>
+      <p id="auth-status" role="status" hidden></p>
+      <button class="button auth-submit" type="submit">Đăng nhập</button>
+    </form>
+    <p class="auth-switch"><span id="auth-switch-label">Bạn chưa có tài khoản?</span> <button type="button" id="auth-switch" data-auth="register">Đăng ký ngay</button></p>
+  </dialog>
   <div id="toast" role="status" aria-live="polite"></div>
-  <noscript><p class="noscript">Bật JavaScript để sử dụng danh mục sản phẩm, giỏ hàng và tạo yêu cầu.</p></noscript>
+  <noscript>
+    <p class="noscript">Bật JavaScript để sử dụng danh mục sản phẩm, giỏ hàng và tạo yêu cầu.</p>
+  </noscript>
 </body>
+
 </html>

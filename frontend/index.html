@@ -12,6 +12,8 @@
   <link rel="icon" href="assets/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+  <script src="auth.js" defer></script>
   <script src="store.js" defer></script>
   <script src="journal-data.js" defer></script>
   <script src="app.js" defer></script>
@@ -21,7 +23,7 @@
 
 <body>
   <a class="skip-link" href="#main">Đến nội dung chính</a>
-  <header class="header">
+  <header class="header header-with-auth">
     <a class="brand" href="#" aria-label="Macca Toàn Thắng — Trang chủ"><img class="brand-logo"
         src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64"></a>
     <nav aria-label="Điều hướng chính"><a class="active" href="#main">Trang chủ</a><a href="san-pham.html">Sản
@@ -35,7 +37,12 @@
           viewBox="0 0 24 24">
           <path d="M5 7h14l1 14H4L5 7Z" />
           <path d="M8 8V6a4 4 0 0 1 8 0v2" />
-        </svg><span>Giỏ hàng</span><b id="cart-count">0</b></a></div>
+        </svg><span>Giỏ hàng</span><b id="cart-count">0</b></a>
+      <div class="header-auth" aria-label="Tài khoản">
+        <button class="auth-login" type="button" data-auth="login" aria-haspopup="dialog" aria-controls="auth-dialog">Đăng nhập</button>
+        <button class="auth-register" type="button" data-auth="register" aria-haspopup="dialog" aria-controls="auth-dialog">Đăng ký</button>
+      </div>
+    </div>
   </header>
   <form class="search-bar" id="search-form" hidden role="search"><label for="search">Bạn đang tìm sản phẩm
       nào?</label><input id="search" type="search" placeholder="Tìm macca, nhân hạt, quà tặng…"><button class="button"
@@ -216,6 +223,21 @@
     <div class="dialog-header"><span>MACCA TOÀN THẮNG</span><button class="icon-button" data-close
         aria-label="Đóng">✕</button></div>
     <div id="detail-content"></div>
+  </dialog>
+  <dialog id="auth-dialog" aria-labelledby="auth-title" aria-describedby="auth-description">
+    <div class="dialog-header"><span>MACCA TOÀN THẮNG</span><button class="icon-button" type="button" data-close aria-label="Đóng">✕</button></div>
+    <h2 id="auth-title">Đăng nhập</h2>
+    <p id="auth-description">Chào mừng bạn đến với Macca Toàn Thắng.</p>
+    <form id="auth-form">
+      <div id="auth-name-field" hidden><label for="auth-name">Họ và tên</label><input id="auth-name" name="name" autocomplete="name" maxlength="100" disabled></div>
+      <div><label for="auth-email">Email</label><input id="auth-email" name="email" type="email" autocomplete="username" required maxlength="254"></div>
+      <div><label for="auth-password">Mật khẩu</label><input id="auth-password" name="password" type="password" autocomplete="current-password" required></div>
+      <div id="auth-confirm-field" hidden><label for="auth-confirm">Nhập lại mật khẩu</label><input id="auth-confirm" name="confirm-password" type="password" autocomplete="new-password" disabled></div>
+      <p class="auth-notice">Chức năng tài khoản đang được chuẩn bị. Biểu mẫu hiện chưa gửi hoặc lưu thông tin của bạn.</p>
+      <p id="auth-status" role="status" hidden></p>
+      <button class="button auth-submit" type="submit">Đăng nhập</button>
+    </form>
+    <p class="auth-switch"><span id="auth-switch-label">Bạn chưa có tài khoản?</span> <button type="button" id="auth-switch" data-auth="register">Đăng ký ngay</button></p>
   </dialog>
   <div id="toast" role="status" aria-live="polite"></div>
   <noscript>

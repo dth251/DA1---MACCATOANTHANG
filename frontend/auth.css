@@ -1,0 +1,22 @@
+.header-with-auth{padding-top:24px}
+.header-auth{position:absolute;top:4px;right:max(4.5vw,24px);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.header-auth button{min-height:26px;padding:3px 9px;font-size:11px;line-height:20px;font-weight:500;border-radius:3px}
+.auth-login:hover{background:var(--cream)}
+.header-auth .auth-register{background:var(--green);color:#fff}
+.header-auth .auth-register:hover{background:#3c5942}
+#auth-dialog{width:min(460px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:28px;border:1px solid var(--line);border-radius:12px;color:var(--ink);overflow-y:auto}
+#auth-dialog::backdrop{background:rgb(24 40 30 / 55%)}
+#auth-dialog h2{margin:24px 0 10px;font-size:30px}
+#auth-description{font-size:14px;color:var(--muted)}
+#auth-form{display:grid;gap:16px}
+#auth-form label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+#auth-form input{width:100%;min-height:46px;padding:10px 12px;border:1px solid #cbd2c7;border-radius:4px;background:#fff;color:var(--ink);font-size:16px}
+#auth-form .auth-notice{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+#auth-status{margin:0;padding:12px;background:var(--cream);font-size:14px}
+.auth-submit{width:100%;border-radius:4px}
+.auth-switch{margin:20px 0 0;text-align:center;font-size:13px}
+.auth-switch button{padding:6px 3px;font-weight:600;text-decoration:underline;text-underline-offset:4px}
+@media(min-width:801px){.header-with-auth{flex-wrap:nowrap}.header-with-auth nav{order:0;width:auto;flex-wrap:nowrap;white-space:nowrap}.header-with-auth .brand,.header-with-auth .header-actions{flex-shrink:0}}
+@media(min-width:801px) and (max-width:1250px){.header-with-auth{height:104px;padding:24px 24px 0;gap:16px}.header-with-auth .brand-logo{width:clamp(155px,20vw,250px);height:auto}.header-with-auth nav{gap:clamp(10px,1.5vw,18px);font-size:12px}.header-with-auth .header-actions{gap:8px;margin-left:0}.header-with-auth .cart-button>span{display:none}.header-auth{right:24px}}
+@media(max-width:800px){.header-with-auth{padding-top:36px}.header-auth{right:24px}}
+@media(max-width:600px){#auth-dialog{padding:20px}}

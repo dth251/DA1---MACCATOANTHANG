@@ -3,9 +3,12 @@
   const $ = selector => document.querySelector(selector);
   const form = $('#contact-form');
   let messageText = '';
+  let sending = false;
+  const send = MaccaRequests.sender('contact');
   const topics = { general: 'Thông tin sản phẩm', order: 'Hỗ trợ đơn hàng', partnership: 'Hợp tác / phân phối', feedback: 'Góp ý khác' };
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
+    if (sending || messageText) return;
     $('#contact-error').textContent = '';
     if (!form.reportValidity()) return;
     const data = new FormData(form);
@@ -21,13 +24,21 @@
       return;
     }
     if (!topics[get('topic')]) { $('#contact-error').textContent = 'Vui lòng chọn một chủ đề liên hệ.'; return; }
-    messageText = ['MACCA TOÀN THẮNG — LỜI NHẮN LIÊN HỆ (CHƯA GỬI)', 'Ngày tạo: ' + new Date().toLocaleString('vi-VN'), '', 'Họ tên: ' + get('name'), 'Email: ' + get('email'), 'Điện thoại: ' + (get('phone') || 'Không cung cấp'), 'Chủ đề: ' + topics[get('topic')], '', get('message'), '', 'Bản nháp trên thiết bị. Chưa gửi đến cửa hàng.'].join('\n');
+    sending = true;
+    let accepted;
+    try {
+      accepted = await send(form, { type: 'contact', consent: form.elements.namedItem('acknowledge').checked, customer: { name: get('name'), email: get('email'), phone: get('phone') }, topic: get('topic'), message: get('message') });
+    } catch (error) { $('#contact-error').textContent = error.message; return; }
+    finally { sending = false; }
+    messageText = ['MACCA TOÀN THẮNG — LỜI NHẮN ĐÃ GỬI', 'Mã yêu cầu: ' + accepted.id, 'Ngày gửi: ' + new Date(accepted.createdAt).toLocaleString('vi-VN'), '', 'Họ tên: ' + get('name'), 'Email: ' + get('email'), 'Điện thoại: ' + (get('phone') || 'Không cung cấp'), 'Chủ đề: ' + topics[get('topic')], '', get('message'), '', 'Đã được lưu vào hộp thư quản trị của cửa hàng.'].join('\n');
     $('#contact-receipt').textContent = messageText;
     $('#contact-layout').hidden = true;
     $('#contact-success').hidden = false;
     $('#contact-success').focus();
   });
   $('#edit-contact').addEventListener('click', () => {
+    messageText = '';
+    form.reset();
     $('#contact-layout').hidden = false; $('#contact-success').hidden = true;
     form.elements.namedItem('message').focus();
   });

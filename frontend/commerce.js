@@ -121,21 +121,32 @@
 
   if (page === 'consult') {
     const form = $('#consult-form');
+    const send = MaccaRequests.sender('consult');
+    let sending = false;
     const topic = new URLSearchParams(location.search).get('topic');
     if (['personal', 'gift', 'wholesale', 'other'].includes(topic)) form.elements.namedItem('topic').value = topic;
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
       event.preventDefault();
+      if (sending || consultText) return;
       if (!validate(form, ['name', 'message'], $('#consult-error'))) return;
       const data = new FormData(form);
       const get = name => String(data.get(name) || '').trim();
       const topics = { personal: 'Sản phẩm dùng cá nhân / gia đình', gift: 'Quà tặng cá nhân / doanh nghiệp', wholesale: 'Đơn hàng số lượng lớn / đại lý', other: 'Nhu cầu khác' };
-      consultText = ['MACCA TOÀN THẮNG — YÊU CẦU TƯ VẤN (CHƯA GỬI)', 'Ngày tạo: ' + new Date().toLocaleString('vi-VN'), '', 'Họ tên: ' + get('name'), 'Điện thoại: ' + get('phone'), 'Email: ' + (get('email') || 'Không cung cấp'), 'Doanh nghiệp: ' + (get('company') || 'Không cung cấp'), 'Nhu cầu: ' + topics[get('topic')], 'Số lượng dự kiến: ' + (get('quantity') || 'Chưa xác định'), 'Ngân sách: ' + get('budget'), '', 'Nội dung: ' + get('message'), '', 'Bản mẫu tạo trên thiết bị. Chưa gửi tới cửa hàng.'].join('\n');
+      sending = true;
+      let accepted;
+      try {
+        accepted = await send(form, { type: 'consult', consent: form.elements.namedItem('acknowledge').checked, customer: { name: get('name'), phone: get('phone'), email: get('email') }, topic: get('topic'), message: get('message'), details: { company: get('company'), quantity: get('quantity') ? Number(get('quantity')) : null, budget: get('budget') } });
+      } catch (error) { $('#consult-error').textContent = error.message; return; }
+      finally { sending = false; }
+      consultText = ['MACCA TOÀN THẮNG — YÊU CẦU TƯ VẤN ĐÃ GỬI', 'Mã yêu cầu: ' + accepted.id, 'Ngày gửi: ' + new Date(accepted.createdAt).toLocaleString('vi-VN'), '', 'Họ tên: ' + get('name'), 'Điện thoại: ' + get('phone'), 'Email: ' + (get('email') || 'Không cung cấp'), 'Doanh nghiệp: ' + (get('company') || 'Không cung cấp'), 'Nhu cầu: ' + topics[get('topic')], 'Số lượng dự kiến: ' + (get('quantity') || 'Chưa xác định'), 'Ngân sách: ' + get('budget'), '', 'Nội dung: ' + get('message'), '', 'Đã được lưu vào hộp thư quản trị của cửa hàng.'].join('\n');
       $('#consult-receipt').textContent = consultText;
       $('#consult-layout').hidden = true;
       $('#consult-success').hidden = false;
       $('#consult-success').focus();
     });
     $('#edit-consult').addEventListener('click', () => {
+      consultText = '';
+      form.reset();
       $('#consult-layout').hidden = false; $('#consult-success').hidden = true;
       form.elements.namedItem('name').focus();
     });
@@ -146,9 +157,11 @@
 
   if (page === 'checkout') {
     const form = $('#checkout-form');
-    form.addEventListener('submit', event => {
+    const send = MaccaRequests.sender('order');
+    let sending = false;
+    form.addEventListener('submit', async event => {
       event.preventDefault();
-      if (orderText) return;
+      if (orderText || sending) return;
       const latest = Macca.read();
       if (JSON.stringify(latest) !== JSON.stringify(cart)) {
         cart = latest; update();
@@ -164,7 +177,15 @@
         return;
       }
       const get = name => String(data.get(name) || '').trim();
-      orderText = ['MACCA TOÀN THẮNG — ĐƠN HÀNG MẪU (CHƯA GỬI)', 'Ngày tạo: ' + new Date().toLocaleString('vi-VN'), '', 'NGƯỜI NHẬN', get('name') + ' · ' + get('phone'), [get('address'), get('ward'), get('province')].join(', '), 'Email: ' + (get('email') || 'Không cung cấp'), '', 'SẢN PHẨM', ...items().map(p => `${p.name} (${p.weight}) × ${cart[p.id]}: ${money(p.price * cart[p.id])}`), '', 'Tạm tính: ' + money(subtotal(cart)), 'Giao hàng: ' + (shippingMethod() === 'express' ? 'Nhanh' : 'Tiêu chuẩn'), 'Phí giao hàng mẫu: ' + money(shipping(cart, shippingMethod())), 'TỔNG CỘNG: ' + money(subtotal(cart) + shipping(cart, shippingMethod())), 'Phương thức: Thanh toán khi nhận hàng (COD) — mô phỏng', 'Ghi chú: ' + (get('note') || 'Không'), '', 'Chưa gửi đơn đến cửa hàng. Chưa thanh toán. Giá và phí là dữ liệu mẫu.'].join('\n');
+      const method = get('shipping');
+      const submittedItems = items().map(p => ({ id: p.id, quantity: cart[p.id] }));
+      sending = true;
+      let accepted;
+      try {
+        accepted = await send(form, { type: 'order', consent: form.elements.namedItem('acknowledge').checked, customer: { name: get('name'), phone: get('phone'), email: get('email'), address: get('address'), ward: get('ward'), province: get('province') }, items: submittedItems, shipping: method, payment: get('payment'), message: get('note'), expectedTotal: subtotal(cart) + shipping(cart, method) });
+      } catch (error) { $('#checkout-error').textContent = error.message; return; }
+      finally { sending = false; }
+      orderText = ['MACCA TOÀN THẮNG — YÊU CẦU ĐẶT HÀNG ĐÃ GỬI', 'Mã yêu cầu: ' + accepted.id, 'Ngày gửi: ' + new Date(accepted.createdAt).toLocaleString('vi-VN'), '', 'NGƯỜI NHẬN', get('name') + ' · ' + get('phone'), [get('address'), get('ward'), get('province')].join(', '), 'Email: ' + (get('email') || 'Không cung cấp'), '', 'SẢN PHẨM', ...accepted.items.map(p => `${p.name} (${p.weight}) × ${p.quantity}: ${money(p.price * p.quantity)}`), '', 'Giao hàng: ' + (method === 'express' ? 'Nhanh' : 'Tiêu chuẩn'), 'Phí giao hàng: ' + money(accepted.shippingFee), 'TỔNG CỘNG: ' + money(accepted.total), 'Phương thức: Thanh toán khi nhận hàng (COD)', 'Ghi chú: ' + (get('note') || 'Không'), '', 'Đã gửi đến cửa hàng, đang chờ xác nhận. Chưa thanh toán.'].join('\n');
       $('#order-receipt').textContent = orderText;
       form.hidden = true; $('#checkout-intro').hidden = true; $('#checkout-notice').hidden = true;
       $('#order-success').hidden = false; $('#order-success').focus();

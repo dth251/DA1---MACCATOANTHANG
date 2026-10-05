@@ -632,6 +632,69 @@ h2 {
   margin: 0;
 }
 
+/* ========================================================
+   EMPTY STATE (Căn giữa trang nhã & cân đối trong khung)
+   ======================================================== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 56px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.empty-state svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--green);
+  stroke-width: 1.6;
+  background: #f0f3eb;
+  padding: 12px;
+  border-radius: 50%;
+  border: 1px solid #dce2d4;
+  margin-bottom: 16px;
+  display: inline-block;
+  box-sizing: content-box;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  font-size: 16.5px;
+  font-weight: 650;
+  color: var(--ink);
+  text-align: center;
+}
+
+.empty-state p {
+  margin: 0 0 20px;
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 380px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.empty-state .button,
+.empty-state button {
+  margin: 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#recent-orders .empty-state,
+#product-preview .empty-state {
+  min-height: 250px;
+}
+
+td .empty-state {
+  padding: 40px 16px;
+  min-height: auto;
+}
+
 /* TABLE SCROLL CONTAINER (Cuộn nội bộ êm ái bên trong thẻ Card) */
 .table-wrap {
   width: 100%;

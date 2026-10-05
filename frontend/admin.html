@@ -9,14 +9,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css">
-  <script src="js/request-api.js" defer></script>
-  <script src="js/admin-auth.js" defer></script>
-  <script src="js/store.js" defer></script>
-  <script src="js/journal-data.js" defer></script>
-  <script src="js/admin-data.js" defer></script>
-  <script src="js/admin.js" defer></script>
-  <script src="js/admin-inbox.js" defer></script>
+  <link rel="stylesheet" href="css/admin.css?v=20261004e">
+  <script src="js/api-client.js?v=20261004e" defer></script>
+  <script src="js/request-api.js?v=20261004e" defer></script>
+  <script src="js/admin-auth.js?v=20261004e" defer></script>
+  <script src="js/store.js?v=20261004e" defer></script>
+  <script src="js/journal-data.js?v=20261004e" defer></script>
+  <script src="js/admin-data.js?v=20261004e" defer></script>
+  <script src="js/admin.js?v=20261004e" defer></script>
+  <script src="js/admin-inbox.js?v=20261004e" defer></script>
 </head>
 <body>
   <section id="admin-login-screen" class="admin-login-screen" aria-labelledby="admin-login-title" hidden>
@@ -33,17 +34,16 @@
       <a href="#orders" data-page="orders"><span data-icon="bag"></span>Đơn hàng</a>
       <a href="#inbox" data-page="inbox"><span data-icon="book"></span>Tư vấn & Lời nhắn <small id="inbox-count" hidden>0</small></a>
       <a href="#customers" data-page="customers"><span data-icon="users"></span>Khách hàng</a>
-      <a href="#content" data-page="content"><span data-icon="book"></span>Nội dung website</a>
+      <a href="#content" data-page="content"><span data-icon="book"></span>Tin tức</a>
       <a href="#settings" data-page="settings"><span data-icon="settings"></span>Cài đặt web</a>
     </nav>
-    <div class="sidebar-bottom"><div class="sidebar-note"><span class="live-dot"></span> Bản quản lý cục bộ<p>Một nơi để chăm chút<br>từng sản phẩm, từng đơn hàng.</p></div><a href="index.html"><span data-icon="arrow"></span> Xem trang khách hàng</a></div>
+    <div class="sidebar-bottom"><div class="sidebar-note"><span class="live-dot"></span> Hệ thống quản trị trực tuyến<p>Đã kết nối máy chủ máy chủ<br>Macca Toàn Thắng.</p></div><a href="index.html"><span data-icon="arrow"></span> Xem trang khách hàng</a></div>
   </aside>
   <div class="admin-shell">
     <header class="admin-topbar"><div><span class="breadcrumb">Cửa hàng / </span><span id="breadcrumb-current">Tổng quan</span></div><div class="topbar-right"><span id="today"></span><span class="avatar" aria-label="Quản trị viên">TT</span><span class="admin-role"><span id="admin-username"></span><small>Quản trị viên</small></span><button id="admin-logout" class="button secondary" type="button">Đăng xuất</button></div></header>
     <main id="admin-main" tabindex="-1">
       <p id="admin-session-error" class="error-banner" role="alert" hidden></p>
       <div class="page-heading"><div><p class="eyebrow">MACCA TOÀN THẮNG</p><h1 id="page-title">Tổng quan cửa hàng</h1><p id="page-description">Theo dõi và chăm chút cửa hàng của bạn mỗi ngày.</p></div><button class="button secondary" id="export-data"><span data-icon="download"></span>Xuất dữ liệu</button></div>
-      <div class="local-notice"><span data-icon="info"></span><p><strong>Yêu cầu từ khách</strong> được lưu trên máy chủ và cần đăng nhập admin để xem. Danh mục và đơn thủ công ở các mục khác vẫn lưu riêng trên thiết bị này.</p></div>
       <p id="storage-error" class="error-banner" role="alert" hidden></p>
 
       <section id="page-overview" class="page-panel" aria-label="Tổng quan">
@@ -54,102 +54,177 @@
       </section>
 
       <section id="page-products" class="page-panel" aria-label="Quản lý sản phẩm" hidden>
-        <div class="card"><div class="toolbar"><label class="search-field"><span data-icon="search"></span><input id="product-search" type="search" placeholder="Tìm tên hoặc mã sản phẩm…" aria-label="Tìm sản phẩm"></label><select id="product-category" aria-label="Lọc danh mục"><option value="all">Tất cả danh mục</option><option value="shell">Macca nguyên vỏ</option><option value="kernel">Nhân macca</option><option value="gift">Quà tặng</option></select><button class="button" data-action="new-product">＋ Thêm sản phẩm</button></div><div class="table-wrap"><table><caption class="sr-only">Danh sách sản phẩm quản lý cục bộ</caption><thead><tr><th>Sản phẩm</th><th>Danh mục</th><th>Giá bán</th><th>Tồn kho</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="product-rows"></tbody></table></div><p class="table-footer" id="product-result" aria-live="polite"></p></div>
+        <div class="card"><div class="toolbar"><label class="search-field"><span data-icon="search"></span><input id="product-search" type="search" placeholder="Tìm tên hoặc mã sản phẩm…" aria-label="Tìm sản phẩm"></label><select id="product-category" aria-label="Lọc danh mục"><option value="all">Tất cả danh mục</option><option value="shell">Macca nguyên vỏ</option><option value="kernel">Nhân macca</option><option value="gift">Quà tặng</option></select><select id="product-status-filter" aria-label="Lọc trạng thái sản phẩm"><option value="all">Tất cả trạng thái</option><option value="active">Đang hiển thị</option><option value="hidden">Đang ẩn</option></select><button class="button" data-action="new-product">＋ Thêm sản phẩm</button></div><div class="table-wrap"><table><caption class="sr-only">Danh sách sản phẩm quản lý cục bộ</caption><thead><tr><th>Sản phẩm</th><th>Danh mục</th><th>Giá bán</th><th>Tồn kho</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="product-rows"></tbody></table></div><p class="table-footer" id="product-result" aria-live="polite"></p></div>
       </section>
 
       <section id="page-orders" class="page-panel" aria-label="Quản lý đơn hàng" hidden>
-        <div class="card"><div class="toolbar"><label class="search-field"><span data-icon="search"></span><input id="order-search" type="search" placeholder="Tìm mã đơn, tên, số điện thoại…" aria-label="Tìm đơn hàng"></label><select id="order-filter" aria-label="Lọc trạng thái đơn"><option value="all">Tất cả trạng thái</option><option value="pending">Chờ xác nhận</option><option value="confirmed">Đã xác nhận</option><option value="shipping">Đang giao</option><option value="completed">Hoàn thành</option><option value="cancelled">Đã hủy</option></select><button class="button" data-action="new-order">＋ Tạo đơn hàng</button></div><div class="table-wrap"><table><caption class="sr-only">Đơn hàng tạo thủ công</caption><thead><tr><th>Mã đơn / ngày tạo</th><th>Khách hàng</th><th>Tổng tiền</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="order-rows"></tbody></table></div><p class="table-footer" id="order-result" aria-live="polite"></p></div>
+        <div class="card"><div class="toolbar"><label class="search-field"><span data-icon="search"></span><input id="order-search" type="search" placeholder="Tìm mã đơn, tên, số điện thoại…" aria-label="Tìm đơn hàng"></label><select id="order-filter" aria-label="Lọc trạng thái đơn"><option value="all">Tất cả đơn hàng</option><option value="registered">Đơn của khách đã đăng ký</option><option value="pending">Chờ xác nhận</option><option value="confirmed">Đã xác nhận</option><option value="shipping">Đang giao</option><option value="completed">Hoàn thành</option><option value="cancelled">Đã hủy</option></select><button class="button" data-action="new-order">＋ Tạo đơn hàng</button></div><div class="table-wrap"><table><caption class="sr-only">Danh sách đơn hàng</caption><thead><tr><th>Mã đơn / ngày tạo</th><th>Khách hàng</th><th>Tổng tiền</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="order-rows"></tbody></table></div><p class="table-footer" id="order-result" aria-live="polite"></p></div>
       </section>
 
       <section id="page-inbox" class="page-panel" aria-label="Yêu cầu từ khách" hidden>
-        <div id="inbox-workspace"><div class="card"><div class="toolbar"><label class="search-field"><input id="inbox-search" type="search" placeholder="Tìm mã yêu cầu, khách hàng, email…" aria-label="Tìm yêu cầu"></label><select id="inbox-type" aria-label="Lọc loại yêu cầu"><option value="all">Tất cả yêu cầu</option><option value="consult">Tư vấn</option><option value="contact">Lời nhắn / Liên hệ</option></select><select id="inbox-status" aria-label="Lọc trạng thái yêu cầu"><option value="all">Tất cả trạng thái</option><option value="new">Mới nhận</option><option value="processing">Đang xử lý</option><option value="completed">Đã xử lý</option><option value="rejected">Đã từ chối</option></select><button id="inbox-refresh" class="button secondary">Làm mới</button></div><p id="inbox-error" class="form-error inbox-error" role="alert"></p><div class="table-wrap"><table><caption class="sr-only">Yêu cầu từ website khách hàng</caption><thead><tr><th>Mã / Ngày gửi</th><th>Loại</th><th>Khách hàng</th><th>Nội dung</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="inbox-rows"></tbody></table></div><p id="inbox-result" class="table-footer" aria-live="polite"></p></div></div>
+        <div id="inbox-workspace"><div class="card"><div class="toolbar"><label class="search-field"><input id="inbox-search" type="search" placeholder="Tìm mã yêu cầu, khách hàng, email…" aria-label="Tìm yêu cầu"></label><select id="inbox-type" aria-label="Lọc loại yêu cầu"><option value="all">Tất cả yêu cầu</option><option value="consult">Tư vấn</option><option value="contact">Lời nhắn / Liên hệ</option></select><select id="inbox-status" aria-label="Lọc trạng thái yêu cầu"><option value="all">Tất cả trạng thái</option><option value="new">Mới nhận</option><option value="processing">Đang xử lý</option><option value="completed">Đã xử lý</option><option value="rejected">Đã từ chối</option></select><button id="inbox-refresh" class="button secondary">Làm mới</button></div><p id="inbox-error" class="form-error inbox-error" role="alert"></p><div class="table-wrap"><table><caption class="sr-only">Yêu cầu từ website khách hàng</caption><thead><tr><th>Mã / Ngày gửi</th><th>Loại</th><th>Khách hàng</th><th>Nội dung</th><th>Trạng thái</th><th style="text-align: center;">Thao tác</th></tr></thead><tbody id="inbox-rows"></tbody></table></div><p id="inbox-result" class="table-footer" aria-live="polite"></p></div></div>
       </section>
-      <section id="page-customers" class="page-panel" aria-label="Khách hàng" hidden><div class="card"><div class="toolbar"><label class="search-field"><span data-icon="search"></span><input id="customer-search" type="search" placeholder="Tìm tên, email, số điện thoại…" aria-label="Tìm khách hàng"></label><span class="muted">Tổng hợp từ đơn hàng đã tạo</span></div><div class="table-wrap"><table><caption class="sr-only">Khách hàng theo số điện thoại</caption><thead><tr><th>Khách hàng</th><th>Liên hệ</th><th>Số đơn</th><th>Giá trị đơn hoàn thành</th></tr></thead><tbody id="customer-rows"></tbody></table></div></div></section>
 
-      <section id="page-content" class="page-panel" aria-label="Nội dung website" hidden><div class="card"><div class="card-heading"><div><h2>Góc macca</h2><p>Các bài viết hiện có trên website khách hàng</p></div><a class="text-link" href="goc-macca.html">Mở trang bài viết ↗</a></div><div id="article-grid" class="article-grid"></div></div><div class="content-shortcuts"><a class="card" href="cau-chuyen.html"><span data-icon="book"></span><h2>Câu chuyện thương hiệu</h2><p>Xem nội dung giới thiệu Macca Toàn Thắng.</p><span class="text-link">Mở trang ↗</span></a><a class="card" href="lien-he.html"><span data-icon="users"></span><h2>Thông tin liên hệ</h2><p>Xem địa chỉ và các kênh liên hệ của cửa hàng.</p><span class="text-link">Mở trang ↗</span></a></div></section>
-            <section id="page-settings" class="page-panel" aria-label="Cài đặt web" hidden>
+      <section id="page-customers" class="page-panel" aria-label="Khách hàng" hidden>
+        <div class="card">
+          <div class="toolbar">
+            <label class="search-field"><span data-icon="search"></span><input id="customer-search" type="search" placeholder="Tìm tên, email, số điện thoại…" aria-label="Tìm khách hàng"></label>
+            <select id="customer-type-filter" aria-label="Lọc loại khách hàng">
+              <option value="all">Tất cả khách hàng</option>
+              <option value="registered">Khách hàng đã đăng ký</option>
+              <option value="guest">Khách mua trực tiếp/vãng lai</option>
+            </select>
+            <span class="muted">Theo dõi khách hàng đã đăng ký và chi tiết đơn hàng đã mua</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Khách hàng và lịch sử đơn</caption>
+              <thead>
+                <tr>
+                  <th>Khách hàng</th>
+                  <th>Số điện thoại</th>
+                  <th>Địa chỉ &amp; Email</th>
+                  <th>Loại tài khoản</th>
+                  <th>Số đơn đã mua</th>
+                  <th>Tổng chi tiêu</th>
+                  <th style="text-align: center;">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="customer-rows"></tbody>
+            </table>
+          </div>
+          <p class="table-footer" id="customer-result" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section id="page-content" class="page-panel" aria-label="Tin tức" hidden>
+        <div class="card">
+          <div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <label class="search-field"><span data-icon="search"></span><input id="admin-article-search" type="search" placeholder="Tìm tiêu đề, nhãn bài viết…" aria-label="Tìm bài viết"></label>
+            <select id="admin-article-category" aria-label="Lọc chuyên mục bài viết">
+              <option value="all">Tất cả chuyên mục</option>
+              <option value="enjoy">Thưởng thức (Enjoy)</option>
+              <option value="kitchen">Góc bếp (Kitchen)</option>
+              <option value="gift">Quà tặng (Gift)</option>
+            </select>
+            <select id="admin-article-status" aria-label="Lọc trạng thái bài viết">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="published">Đang hiển thị</option>
+              <option value="hidden">Đang ẩn</option>
+            </select>
+            <button class="button" id="btn-admin-add-article" type="button" style="border-radius: 0;">＋ Thêm bài viết mới</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Quản lý bài viết tin tức Góc Macca</caption>
+              <thead>
+                <tr>
+                  <th>Bài viết</th>
+                  <th>Chuyên mục</th>
+                  <th>Nhãn hiển thị</th>
+                  <th>Trạng thái</th>
+                  <th style="text-align: center;">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="admin-article-rows"></tbody>
+            </table>
+          </div>
+          <p class="table-footer" id="admin-article-result" aria-live="polite"></p>
+        </div>
+        <div class="content-shortcuts">
+          <a class="card" href="goc-macca.html" target="_blank"><span data-icon="book"></span><h2>Xem trang Tin tức (Góc Macca)</h2><p>Mở trang bài viết tin tức trên giao diện khách hàng.</p><span class="text-link">Mở trang khách ↗</span></a>
+          <a class="card" href="cau-chuyen.html" target="_blank"><span data-icon="book"></span><h2>Câu chuyện thương hiệu</h2><p>Xem nội dung giới thiệu Macca Toàn Thắng.</p><span class="text-link">Mở trang khách ↗</span></a>
+        </div>
+      </section>
+
+      <section id="page-settings" class="page-panel" aria-label="Cài đặt thông tin liên hệ" hidden>
         <div class="card settings-container">
           <div class="settings-header">
-            <p class="eyebrow" style="color: var(--olive); font-size: 11px; font-weight: 600; letter-spacing: 1.5px;">HỆ THỐNG WEBSITE</p>
-            <h2>Cài đặt website khách hàng</h2>
-            <p>Tùy chỉnh thông tin liên hệ, hotline Zalo, thanh thông báo và cấu hình đơn hàng trực tiếp trên website.</p>
+            <h2>Cài đặt thông tin liên hệ</h2>
           </div>
 
           <form id="web-settings-form">
-            <h3 class="settings-section-title">1. Thông tin thương hiệu & Liên hệ</h3>
-            <div class="form-grid" style="margin-bottom: 24px;">
-              <label>Tên thương hiệu
-                <input name="brandName" placeholder="Macca Toàn Thắng" required maxlength="120">
-              </label>
-              <label>Khẩu hiệu (Slogan)
-                <input name="slogan" placeholder="Từ hạt nhỏ, nuôi điều lớn…" maxlength="250">
-              </label>
-              <label>Số điện thoại (Hotline đặt hàng)
-                <input name="phone" placeholder="0988245476" required maxlength="20">
-              </label>
-              <label>Số điện thoại hiển thị
-                <input name="phoneDisplay" placeholder="0988 245 476" required maxlength="30">
-              </label>
-              <label>Link chat Zalo
-                <input name="zalo" placeholder="https://zalo.me/0988245476" maxlength="250">
-              </label>
-              <label>Link Fanpage Facebook
-                <input name="facebook" placeholder="https://facebook.com/maccatoanthang" maxlength="250">
-              </label>
-              <label>Email liên hệ
-                <input name="email" type="email" placeholder="maccatoanthang@gmail.com" maxlength="150">
-              </label>
-              <label>Thời gian phục vụ
-                <input name="hours" placeholder="08:00 – 21:00 hàng ngày" maxlength="100">
-              </label>
-              <label class="full">Địa chỉ cơ sở / Vườn macca
-                <input name="address" placeholder="Sơn Lương, Phú Thọ" maxlength="300">
-              </label>
-            </div>
+            <input type="hidden" name="brandName" value="Macca Toàn Thắng">
 
-            <h3 class="settings-section-title">2. Thanh thông báo đầu trang (Announcement Bar)</h3>
-            <div class="form-grid" style="margin-bottom: 24px;">
-              <label>Trạng thái thanh thông báo
-                <select name="announcementEnable">
-                  <option value="true">Bật (Hiển thị đầu trang web)</option>
-                  <option value="false">Tắt (Tạm ẩn)</option>
-                </select>
-              </label>
-              <label>Đường dẫn khi bấm vào thông báo
-                <input name="announcementLink" placeholder="cau-chuyen.html hoặc san-pham.html" maxlength="200">
-              </label>
-              <label class="full">Nội dung thông báo
-                <input name="announcementText" placeholder="🌿 Chào mừng bạn đến với Macca Toàn Thắng…" maxlength="400">
-              </label>
-            </div>
+            <div class="channel-list">
+              <!-- 1. Số điện thoại / Hotline -->
+              <div class="channel-item">
+                <div class="channel-logo-wrap" title="Số điện thoại Hotline">
+                  <img src="assets/phone-icon.png" alt="Hotline" class="channel-logo-img">
+                </div>
+                <div class="channel-field">
+                  <label for="setting-phone">Số điện thoại Hotline (liên kết gọi)</label>
+                  <input id="setting-phone" name="phone" placeholder="0975895024" required maxlength="20">
+                </div>
+              </div>
 
-            <h3 class="settings-section-title">3. Cấu hình vận chuyển & Cửa hàng</h3>
-            <div class="form-grid" style="margin-bottom: 24px;">
-              <label>Phí giao hàng tiêu chuẩn (₫)
-                <input name="shippingStandard" type="number" min="0" max="1000000" step="1000" required>
-              </label>
-              <label>Phí giao hàng hỏa tốc (₫)
-                <input name="shippingExpress" type="number" min="0" max="1000000" step="1000" required>
-              </label>
-              <label>Đơn hàng tối thiểu miễn phí ship (₫)
-                <input name="freeShippingThreshold" type="number" min="0" max="10000000" step="50000" placeholder="500000 (0 nếu không áp dụng)">
-              </label>
-              <label>Trạng thái nhận đơn
-                <select name="storeStatus">
-                  <option value="open">Đang mở cửa nhận đơn bình thường</option>
-                  <option value="busy">Bận / Tạm ngừng tiếp nhận đơn mới</option>
-                </select>
-              </label>
-              <label class="full">Thông báo lưu ý cho khách đặt hàng
-                <textarea name="storeNotice" rows="2" placeholder="Đơn hàng sẽ được liên hệ xác nhận trong giờ làm việc (08:00 - 21:00)." maxlength="500"></textarea>
-              </label>
+              <!-- 1b. Định dạng hiển thị Hotline -->
+              <div class="channel-item">
+                <div class="channel-logo-wrap" title="Hiển thị SĐT">
+                  <span style="font-weight:700;font-size:18px;color:#243f30;">123</span>
+                </div>
+                <div class="channel-field">
+                  <label for="setting-phone-display">Định dạng SĐT hiển thị (ví dụ: 0975.895.024 hoặc 0975 895 024)</label>
+                  <input id="setting-phone-display" name="phoneDisplay" placeholder="0975.895.024" maxlength="30">
+                </div>
+              </div>
+
+              <!-- 2. Zalo -->
+              <div class="channel-item">
+                <div class="channel-logo-wrap" title="Zalo">
+                  <img src="assets/zalo-icon.png" alt="Zalo" class="channel-logo-img">
+                </div>
+                <div class="channel-field">
+                  <label for="setting-zalo">Link chat Zalo</label>
+                  <input id="setting-zalo" name="zalo" placeholder="https://zalo.me/0975895024" required maxlength="250">
+                </div>
+              </div>
+
+              <!-- 3. Facebook -->
+              <div class="channel-item">
+                <div class="channel-logo-wrap" title="Fanpage Facebook">
+                  <img src="assets/facebook-icon.png" alt="Facebook" class="channel-logo-img">
+                </div>
+                <div class="channel-field">
+                  <label for="setting-facebook">Link Fanpage Facebook</label>
+                  <input id="setting-facebook" name="facebook" placeholder="https://facebook.com/maccatoanthang" required maxlength="250">
+                </div>
+              </div>
+
+              <!-- 4. Gmail -->
+              <div class="channel-item">
+                <div class="channel-logo-wrap" title="Gmail">
+                  <img src="assets/gmail-icon.png" alt="Gmail" class="channel-logo-img">
+                </div>
+                <div class="channel-field">
+                  <label for="setting-email">Gmail / Email liên hệ</label>
+                  <input id="setting-email" name="email" type="email" placeholder="maccatoanthang@gmail.com" required maxlength="150">
+                </div>
+              </div>
+
+              <!-- 5. Địa chỉ cơ sở -->
+              <div class="channel-item">
+                <div class="channel-logo-wrap" title="Địa chỉ">
+                  <span style="font-weight:700;font-size:18px;color:#243f30;">📍</span>
+                </div>
+                <div class="channel-field">
+                  <label for="setting-address">Địa chỉ cơ sở / Vườn macca</label>
+                  <input id="setting-address" name="address" placeholder="Sơn Lương, Phú Thọ" maxlength="250">
+                </div>
+              </div>
             </div>
 
             <p id="settings-error" class="form-error" role="alert"></p>
 
             <div class="settings-actions">
-              <button type="button" id="reset-settings-button" class="button secondary">Khôi phục mặc định</button>
-              <button type="submit" class="button">Lưu cài đặt</button>
+              <button type="button" id="reset-settings-button" class="button secondary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span>Khôi phục mặc định</span>
+              </button>
+              <button type="submit" class="button">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <span>Lưu cài đặt</span>
+              </button>
             </div>
           </form>
         </div>
@@ -159,11 +234,113 @@
     </main>
   </div>
 
-  <dialog id="product-dialog" aria-labelledby="product-dialog-title"><form id="product-form"><div class="dialog-heading"><div><p class="eyebrow">BỘ SƯU TẬP MACCA</p><h2 id="product-dialog-title">Thêm sản phẩm</h2></div><button class="close-button" type="button" data-close aria-label="Đóng">×</button></div><input type="hidden" name="id"><div class="form-grid"><label class="full">Tên sản phẩm<input name="name" required maxlength="120"></label><label>Danh mục<select name="category"><option value="shell">Macca nguyên vỏ</option><option value="kernel">Nhân macca</option><option value="gift">Quà tặng</option></select></label><label>Quy cách<input name="weight" placeholder="500 g" required maxlength="60"></label><label>Giá bán (₫)<input name="price" type="number" min="1000" max="100000000" step="1000" required></label><label>Tồn kho<input name="stock" type="number" min="0" max="1000000" step="1" placeholder="Chưa cập nhật"></label><label>Ảnh sản phẩm<select name="image"><option value="assets/macca-natural.png">Macca sấy mộc</option><option value="assets/macca-kernel.png">Nhân macca</option><option value="assets/macca-roasted.png">Macca rang</option><option value="assets/macca-gift.png">Hộp quà Mộc An</option></select></label><label>Trạng thái<select name="active"><option value="true">Đang kinh doanh</option><option value="false">Tạm ngừng</option></select></label><label class="full">Nhãn sản phẩm<input name="badge" maxlength="60" placeholder="VỊ NGUYÊN BẢN"></label><label class="full">Thành phần<input name="ingredients" maxlength="250"></label><label class="full">Mô tả<textarea name="description" rows="3" maxlength="2000"></textarea></label></div><p id="product-error" class="form-error" role="alert"></p><div class="dialog-actions"><button class="button secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu sản phẩm</button></div></form></dialog>
+  <dialog id="product-dialog" aria-labelledby="product-dialog-title"><form id="product-form"><div class="dialog-heading"><div><p class="eyebrow">BỘ SƯU TẬP MACCA</p><h2 id="product-dialog-title">Thêm sản phẩm</h2></div><button class="close-button" type="button" data-close aria-label="Đóng">×</button></div><input type="hidden" name="id"><div class="form-grid"><label class="full">Tên sản phẩm<input name="name" required maxlength="120"></label><label>Danh mục<select name="category"><option value="shell">Macca nguyên vỏ</option><option value="kernel">Nhân macca</option><option value="gift">Quà tặng</option></select></label><label>Quy cách<input name="weight" placeholder="500 g" required maxlength="60"></label><label>Giá bán (₫)<input name="price" type="number" min="1000" max="100000000" step="1000" required></label><label>Tồn kho<input name="stock" type="number" min="0" max="1000000" step="1" placeholder="Chưa cập nhật"></label><label>Ảnh sản phẩm<select name="image"><option value="assets/macca-natural.png">Macca sấy mộc</option><option value="assets/macca-kernel.png">Nhân macca</option><option value="assets/macca-roasted.png">Macca rang</option><option value="assets/macca-gift.png">Hộp quà Mộc An</option></select></label><label>Trạng thái hiển thị<select name="active"><option value="true">Đang hiển thị (Kinh doanh)</option><option value="false">Đang ẩn (Tạm ngừng)</option></select></label><label class="full">Nhãn sản phẩm<input name="badge" maxlength="60" placeholder="VỊ NGUYÊN BẢN"></label><label class="full">Thành phần<input name="ingredients" maxlength="250"></label><label class="full">Mô tả<textarea name="description" rows="3" maxlength="2000"></textarea></label></div><p id="product-error" class="form-error" role="alert"></p><div class="dialog-actions"><button class="button secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu sản phẩm</button></div></form></dialog>
 
   <dialog id="order-dialog" aria-labelledby="order-dialog-title"><form id="order-form"><div class="dialog-heading"><div><p class="eyebrow">ĐƠN HÀNG THỦ CÔNG</p><h2 id="order-dialog-title">Tạo đơn hàng</h2></div><button type="button" class="close-button" data-close aria-label="Đóng">×</button></div><div class="form-grid"><label>Họ tên khách hàng<input name="name" required maxlength="100" autocomplete="name"></label><label>Số điện thoại<input name="phone" type="tel" required maxlength="20" autocomplete="tel"></label><label class="full">Email (không bắt buộc)<input name="email" type="email" maxlength="254" autocomplete="email"></label><label class="full">Địa chỉ nhận hàng<input name="address" required maxlength="300" autocomplete="street-address"></label></div><h3 class="form-section-title">Sản phẩm đặt mua</h3><div id="order-lines"></div><button class="text-link add-line" id="add-order-line" type="button">＋ Thêm dòng sản phẩm</button><div class="form-grid"><label>Phí giao hàng (₫)<input name="shipping" type="number" value="30000" min="0" max="1000000" step="1000" required></label><label>Phương thức thanh toán<input value="Thanh toán khi nhận hàng (COD)" disabled></label><label class="full">Ghi chú<textarea name="note" rows="2" maxlength="1000"></textarea></label></div><div class="order-total"><span>Tổng giá trị đơn</span><strong id="new-order-total">0 ₫</strong></div><p class="muted">Tồn kho được theo dõi riêng, không tự trừ khi tạo đơn.</p><p id="order-error" class="form-error" role="alert"></p><div class="dialog-actions"><button class="button secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Tạo đơn hàng</button></div></form></dialog>
 
-  <dialog id="order-detail-dialog" aria-labelledby="order-detail-title"><div class="dialog-heading"><h2 id="order-detail-title">Chi tiết đơn hàng</h2><button type="button" class="close-button" data-close aria-label="Đóng">×</button></div><div id="order-detail"></div><form id="status-form"><label>Trạng thái đơn<select name="status"><option value="pending">Chờ xác nhận</option><option value="confirmed">Đã xác nhận</option><option value="shipping">Đang giao</option><option value="completed">Hoàn thành</option><option value="cancelled">Đã hủy</option></select></label><p id="status-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close>Đóng</button><button class="button" type="submit">Lưu trạng thái</button></div></form></dialog>
+  <dialog id="order-detail-dialog" aria-labelledby="order-detail-title" style="width: min(760px, calc(100% - 28px)); border-radius: 0;"><div class="dialog-heading"><h2 id="order-detail-title">Chi tiết đơn hàng</h2><button type="button" class="close-button" data-close aria-label="Đóng">×</button></div><div id="order-detail"></div><form id="status-form"><label>Cập nhật trạng thái đơn hàng<select name="status"><option value="pending">Chờ xác nhận</option><option value="confirmed">Đã xác nhận</option><option value="shipping">Đang giao</option><option value="completed">Hoàn thành</option><option value="cancelled">Đã hủy</option></select></label><p id="status-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close>Đóng</button><button class="button" type="submit">Lưu trạng thái</button></div></form></dialog>
+
+  <dialog id="customer-orders-dialog" aria-labelledby="customer-orders-title" style="width: min(840px, calc(100% - 28px)); border-radius: 0;">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow" id="customer-orders-eyebrow">LỊCH SỬ MUA HÀNG CỦA KHÁCH</p>
+        <h2 id="customer-orders-title">Đơn hàng của khách hàng</h2>
+      </div>
+      <button type="button" class="close-button" data-close aria-label="Đóng">×</button>
+    </div>
+    <div id="customer-orders-info" style="margin-bottom: 16px; padding: 14px; background: #f5f6ef; border: 1px solid var(--line);"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mã đơn</th>
+            <th>Ngày đặt</th>
+            <th>Sản phẩm đã mua</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th style="text-align: center;">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="customer-orders-tbody"></tbody>
+      </table>
+    </div>
+    <div class="dialog-actions">
+      <button type="button" class="button secondary" data-close>Đóng</button>
+    </div>
+  </dialog>
+
+  <dialog id="admin-article-dialog" aria-labelledby="admin-article-title" style="width: min(760px, calc(100% - 28px)); border-radius: 0;">
+    <form id="admin-article-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">QUẢN LÝ GÓC MACCA</p>
+          <h2 id="admin-article-title">Thêm bài viết mới</h2>
+        </div>
+        <button type="button" class="close-button" data-close aria-label="Đóng">×</button>
+      </div>
+      <input type="hidden" name="editSlug" value="">
+      <div class="form-grid">
+        <label class="full">Tiêu đề bài viết <span style="color: #b33924;">*</span>
+          <input name="title" required maxlength="255" placeholder="Ví dụ: Ba cách thưởng thức hạt macca chuẩn vị" style="border-radius: 0;">
+        </label>
+        <label>Chuyên mục <span style="color: #b33924;">*</span>
+          <select name="category" required style="border-radius: 0;">
+            <option value="enjoy">Thưởng thức (Enjoy)</option>
+            <option value="kitchen">Góc bếp (Kitchen)</option>
+            <option value="gift">Quà tặng (Gift)</option>
+          </select>
+        </label>
+        <label>Nhãn hiển thị
+          <input name="label" maxlength="80" placeholder="VD: THƯỞNG THỨC, GÓC BẾP, QUÀ TẶNG..." style="border-radius: 0;">
+        </label>
+        <label>Đường dẫn SEO (Slug)
+          <input name="slug" pattern="^[a-z0-9-]*$" maxlength="120" placeholder="Để trống hệ thống sẽ tự sinh tự động" style="border-radius: 0;">
+        </label>
+        <label>Ảnh đại diện bài viết
+          <select name="image" style="border-radius: 0;">
+            <option value="assets/macca-natural.png">Ảnh macca nguyên vị (macca-natural.png)</option>
+            <option value="assets/macca-kernel.png">Ảnh nhân macca (macca-kernel.png)</option>
+            <option value="assets/macca-gift.png">Ảnh hộp quà macca (macca-gift.png)</option>
+            <option value="assets/macca-hero.png">Ảnh vườn &amp; cành macca (macca-hero.png)</option>
+          </select>
+        </label>
+        <label>Trạng thái hiển thị
+          <select name="published" style="border-radius: 0;">
+            <option value="true">Đang hiển thị (Xuất bản)</option>
+            <option value="false">Đang ẩn (Tạm ẩn)</option>
+          </select>
+        </label>
+        <label class="full">Tóm tắt ngắn (Description)
+          <textarea name="description" rows="2" maxlength="1000" placeholder="Mô tả tóm tắt ngắn cho bài viết..." style="border-radius: 0;"></textarea>
+        </label>
+        <label class="full">Nội dung chi tiết bài viết (Body) <span style="color: #b33924;">*</span>
+          <textarea name="body" required rows="7" placeholder="Nội dung bài viết, hỗ trợ định dạng đoạn văn <p> hoặc xuống dòng thông thường..." style="border-radius: 0; font-family: inherit;"></textarea>
+        </label>
+      </div>
+      <p id="admin-article-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions">
+        <button type="button" class="button secondary" data-close style="border-radius: 0;">Hủy</button>
+        <button type="submit" class="button" id="admin-article-submit" style="border-radius: 0;">Lưu bài viết</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="admin-article-delete-dialog" aria-labelledby="admin-article-del-title" style="border-radius: 0;">
+    <form id="admin-article-delete-form">
+      <div class="dialog-heading">
+        <h2 id="admin-article-del-title">Xóa bài viết?</h2>
+        <button type="button" class="close-button" data-close aria-label="Đóng">×</button>
+      </div>
+      <p id="admin-article-del-desc" style="margin: 12px 0;"></p>
+      <p class="muted">Bài viết này sẽ bị xóa hoàn toàn khỏi Góc Macca trên website.</p>
+      <p id="admin-article-del-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions">
+        <button type="button" class="button secondary" data-close style="border-radius: 0;">Giữ lại</button>
+        <button class="button danger" type="submit" style="border-radius: 0;">Xóa bài viết</button>
+      </div>
+    </form>
+  </dialog>
+
   <dialog id="delete-dialog" aria-labelledby="delete-title"><form id="delete-form"><div class="dialog-heading"><h2 id="delete-title">Xóa sản phẩm?</h2><button type="button" class="close-button" data-close aria-label="Đóng">×</button></div><p id="delete-description"></p><p class="muted">Các đơn hàng đã tạo vẫn giữ thông tin sản phẩm tại thời điểm đặt.</p><p id="delete-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close>Giữ lại</button><button class="button danger" type="submit">Xóa sản phẩm</button></div></form></dialog>
   <dialog id="inbox-detail-dialog" aria-labelledby="inbox-detail-title"><div class="dialog-heading"><h2 id="inbox-detail-title">Chi tiết yêu cầu</h2><button type="button" class="close-button" data-close aria-label="Đóng">×</button></div><div id="inbox-detail"></div><form id="inbox-status-form"><input type="hidden" name="id"><label>Trạng thái xử lý<select name="status"><option value="new">Mới nhận</option><option value="processing">Đang xử lý</option><option value="completed">Đã xử lý</option><option value="rejected">Đã từ chối</option></select></label><p id="inbox-detail-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close>Đóng</button><button type="submit" class="button">Lưu trạng thái</button></div></form></dialog>
   <div id="admin-toast" role="status" aria-live="polite"></div>

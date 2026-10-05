@@ -28,3 +28,81 @@ const MaccaJournal = [
     "description": "Bắt đầu từ sở thích người nhận để chuẩn bị món quà cùng một lời nhắn chân thành."
   }
 ];
+
+async function loadArticles() {
+  if (window.MaccaApi?.request) {
+    try {
+      const data = await window.MaccaApi.request('/api/articles?limit=100');
+      const items = Array.isArray(data?.items) ? data.items : (Array.isArray(data) ? data : null);
+      if (items && items.length > 0) {
+        MaccaJournal.length = 0;
+        for (const item of items) {
+          MaccaJournal.push({
+            slug: item.slug,
+            title: item.title,
+            body: item.body,
+            category: typeof item.category === 'string' ? item.category.toLowerCase() : 'enjoy',
+            label: item.label || 'GÓC MACCA',
+            image: item.image || 'assets/macca-natural.png',
+            description: item.description || '',
+            published: item.published !== false
+          });
+        }
+        window.dispatchEvent(new CustomEvent('macca:articles-loaded', { detail: MaccaJournal }));
+      }
+    } catch (e) {
+      console.warn('Backend chưa bật hoặc lỗi mạng, sử dụng bài viết mẫu:', e.message);
+    }
+  }
+  syncArticlesFromAdminStorage();
+  return MaccaJournal;
+}
+
+function syncArticlesFromAdminStorage() {
+  try {
+    const raw = localStorage.getItem('macca-toan-thang-admin-v1');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed?.articles) && parsed.articles.length > 0) {
+        const map = new Map(parsed.articles.map(a => [a.slug, a]));
+        for (const art of MaccaJournal) {
+          if (map.has(art.slug)) {
+            const remote = map.get(art.slug);
+            art.published = remote.published !== false;
+            if (remote.title) art.title = remote.title;
+            if (remote.description) art.description = remote.description;
+          }
+        }
+        // Add new articles created in admin if not present
+        for (const remote of parsed.articles) {
+          if (!MaccaJournal.some(a => a.slug === remote.slug)) {
+            MaccaJournal.push({
+              slug: remote.slug,
+              title: remote.title,
+              body: remote.body || '',
+              category: typeof remote.category === 'string' ? remote.category.toLowerCase() : 'enjoy',
+              label: remote.label || 'GÓC MACCA',
+              image: remote.image || 'assets/macca-natural.png',
+              description: remote.description || '',
+              published: remote.published !== false
+            });
+          }
+        }
+      }
+    }
+  } catch {}
+}
+
+syncArticlesFromAdminStorage();
+window.addEventListener('storage', event => {
+  if (event.key === 'macca-toan-thang-admin-v1') {
+    syncArticlesFromAdminStorage();
+    window.dispatchEvent(new CustomEvent('macca:articles-loaded', { detail: MaccaJournal }));
+  }
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { loadArticles(); });
+} else {
+  loadArticles();
+}

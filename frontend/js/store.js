@@ -15,5 +15,68 @@ window.Macca = (() => {
   function shipping(cart, method = 'standard') { return subtotal(cart) === 0 ? 0 : method === 'express' ? 45000 : 30000; }
   function count(cart) { return Object.values(sanitize(cart)).reduce((a, b) => a + b, 0); }
   function download(name, text) { const url = URL.createObjectURL(new Blob(['\uFEFF' + text], { type: 'text/plain;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
-  return { products, key, money, sanitize, read, write, subtotal, shipping, count, download };
+  async function loadProducts() {
+    if (window.MaccaApi?.request) {
+      try {
+        const data = await window.MaccaApi.request('/api/products?limit=100');
+        const items = Array.isArray(data?.items) ? data.items : (Array.isArray(data) ? data : null);
+        if (items && items.length > 0) {
+          products.length = 0;
+          for (const item of items) {
+            products.push({
+              id: item.id,
+              image: item.image || 'assets/macca-natural.png',
+              name: item.name,
+              category: typeof item.category === 'string' ? item.category.toLowerCase() : 'shell',
+              categoryName: item.categoryName || (item.category === 'gift' ? 'BỘ SƯU TẬP QUÀ TẶNG' : (item.category === 'kernel' ? 'NHÂN MACCA' : 'MACCA NGUYÊN VỎ')),
+              weight: item.weight || '500 g',
+              price: item.price,
+              badge: item.badge || '',
+              description: item.description || '',
+              ingredients: item.ingredients || '',
+              stock: item.stock,
+              active: item.active !== false
+            });
+          }
+          window.dispatchEvent(new CustomEvent('macca:products-loaded', { detail: products }));
+        }
+      } catch (err) {
+        console.warn('Backend chưa bật hoặc lỗi mạng, sử dụng danh mục sản phẩm mẫu:', err.message);
+      }
+    }
+    syncFromAdminStorage();
+    return products;
+  }
+  function syncFromAdminStorage() {
+    try {
+      const raw = localStorage.getItem('macca-toan-thang-admin-v1');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.products) && parsed.products.length > 0) {
+          const map = new Map(parsed.products.map(p => [p.id, p]));
+          for (const prod of products) {
+            if (map.has(prod.id)) {
+              const remote = map.get(prod.id);
+              prod.active = remote.active !== false;
+              if (remote.price) prod.price = remote.price;
+              if (remote.name) prod.name = remote.name;
+            }
+          }
+        }
+      }
+    } catch {}
+  }
+  syncFromAdminStorage();
+  window.addEventListener('storage', event => {
+    if (event.key === 'macca-toan-thang-admin-v1') {
+      syncFromAdminStorage();
+      window.dispatchEvent(new CustomEvent('macca:products-loaded', { detail: products }));
+    }
+  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => { loadProducts(); });
+  } else {
+    loadProducts();
+  }
+  return { products, key, money, sanitize, read, write, subtotal, shipping, count, download, loadProducts, syncFromAdminStorage };
 })();

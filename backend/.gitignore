@@ -1,0 +1,16 @@
+.gradle/
+.gradle-user-home/
+.test-postgres/
+build/
+target/
+.bootstrap/
+.env
+.env.*
+!.env.example
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+bin/
+*.log

@@ -1,0 +1,12 @@
+.git
+.gradle
+.gradle-user-home
+.test-postgres
+build
+bin
+target
+.bootstrap
+.env*
+*.md
+.idea
+.vscode

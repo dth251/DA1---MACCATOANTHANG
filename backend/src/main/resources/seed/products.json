@@ -1,0 +1,50 @@
+[
+{
+    "id":  "natural",
+    "image":  "assets/macca-natural.png",
+    "name":  "Macca nguyên vỏ sấy mộc",
+    "category":  "SHELL",
+    "categoryName":  "MACCA NGUYÊN VỎ",
+    "weight":  "500 g",
+    "price":  185000,
+    "badge":  "VỊ NGUYÊN BẢN",
+    "description":  "Lớp vỏ nâu đặc trưng bao bọc phần nhân giòn, béo bùi. Lựa chọn cho những buổi thưởng trà và những phút nghỉ ngơi trong ngày.",
+    "ingredients":  "Macca nguyên vỏ"
+},
+{
+    "id":  "kernel",
+    "image":  "assets/macca-kernel.png",
+    "name":  "Nhân macca nguyên vị",
+    "category":  "KERNEL",
+    "categoryName":  "NHÂN MACCA",
+    "weight":  "250 g",
+    "price":  225000,
+    "badge":  "TIỆN LỢI MỖI NGÀY",
+    "description":  "Nhân macca đã tách vỏ, tiện dùng trực tiếp hoặc kết hợp với sữa chua, granola và các món bánh yêu thích.",
+    "ingredients":  "Nhân macca"
+},
+{
+    "id":  "roasted",
+    "image":  "assets/macca-roasted.png",
+    "name":  "Macca nguyên vỏ rang",
+    "category":  "SHELL",
+    "categoryName":  "MACCA NGUYÊN VỎ",
+    "weight":  "500 g",
+    "price":  195000,
+    "badge":  "GIÒN THƠM",
+    "description":  "Macca rang với hương thơm ấm và vị béo bùi. Một gợi ý để chia sẻ bên bàn trà cùng gia đình, bạn bè.",
+    "ingredients":  "Macca nguyên vỏ"
+},
+{
+    "id":  "gift",
+    "image":  "assets/macca-gift.png",
+    "name":  "Hộp quà Mộc An",
+    "category":  "GIFT",
+    "categoryName":  "BỘ SƯU TẬP QUÀ TẶNG",
+    "weight":  "2 hộp × 250 g",
+    "price":  485000,
+    "badge":  "GỬI TRAO YÊU THƯƠNG",
+    "description":  "Hộp quà lấy cảm hứng từ sắc xanh thiên nhiên và chất liệu mộc. Gợi ý dành tặng người thân hoặc đối tác trong những dịp đặc biệt.",
+    "ingredients":  "Macca nguyên vỏ \u0026 nhân macca"
+}
+]

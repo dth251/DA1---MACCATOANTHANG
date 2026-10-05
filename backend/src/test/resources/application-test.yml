@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: ${TEST_DB_URL:jdbc:h2:mem:macca_test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1}
+    username: ${TEST_DB_USERNAME:sa}
+    password: ${TEST_DB_PASSWORD:}
+    driver-class-name: ${TEST_DB_DRIVER:org.h2.Driver}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: ${TEST_DB_DIALECT:org.hibernate.dialect.H2Dialect}
+
+app:
+  admin:
+    password: test-admin-password
+  jwt:
+    secret: test-only-secret-key-at-least-32-bytes-long

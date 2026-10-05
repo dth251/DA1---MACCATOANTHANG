@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 window.MaccaAdmin = (() => {
   const key = 'macca-toan-thang-admin-v1';
   const categories = { shell: 'Macca nguyên vỏ', kernel: 'Nhân macca', gift: 'Quà tặng' };
@@ -106,19 +106,134 @@ window.MaccaAdmin = (() => {
     storageToken = raw;
     return clone(snapshot);
   }
-  function saveProduct(product) {
+  async function syncBackend() {
+    if (!window.MaccaApi?.request) return;
+    const session = window.MaccaApi.getSession();
+    if (!session?.accessToken && !session?.token) return;
+
+    try {
+      const [prodData, orderData, userData, artData] = await Promise.allSettled([
+        window.MaccaApi.request('/api/admin/products?limit=100', { auth: true }),
+        window.MaccaApi.request('/api/admin/orders?limit=100', { auth: true }),
+        window.MaccaApi.request('/api/admin/users?limit=100', { auth: true }),
+        window.MaccaApi.request('/api/admin/articles?limit=100', { auth: true })
+      ]);
+
+      let hasUpdate = false;
+      const next = clone(snapshot);
+
+      if (prodData.status === 'fulfilled' && Array.isArray(prodData.value?.items)) {
+        const remoteProds = prodData.value.items.map(p => ({
+          id: p.id,
+          name: p.name,
+          category: typeof p.category === 'string' ? p.category.toLowerCase() : 'shell',
+          image: p.image || 'assets/macca-natural.png',
+          weight: p.weight || '500 g',
+          price: p.price,
+          stock: p.stock ?? null,
+          active: p.active !== false,
+          badge: p.badge || '',
+          ingredients: p.ingredients || '',
+          description: p.description || ''
+        }));
+        if (remoteProds.length > 0) {
+          next.products = remoteProds;
+          hasUpdate = true;
+        }
+      }
+
+      if (orderData.status === 'fulfilled' && Array.isArray(orderData.value?.items)) {
+        const remoteOrders = orderData.value.items.map(o => ({
+          id: o.id,
+          createdAt: o.createdAt,
+          status: typeof o.status === 'string' ? o.status.toLowerCase() : 'pending',
+          customer: {
+            name: o.user?.name || o.customer?.name || 'Khách hàng',
+            phone: o.user?.phone || o.customer?.phone || '',
+            email: o.user?.email || o.customer?.email || '',
+            address: o.user?.address || o.customer?.address || ''
+          },
+          user: o.user,
+          userId: o.user?.id,
+          isRegistered: !!(o.user && o.user.id),
+          items: Array.isArray(o.items) ? o.items.map(i => ({
+            id: i.id,
+            name: i.name || 'Sản phẩm Macca',
+            weight: i.weight || '500g',
+            price: i.price,
+            quantity: i.quantity
+          })) : [],
+          shipping: o.shippingFee ?? o.shipping ?? 30000,
+          total: o.total,
+          note: o.note || ''
+        }));
+        if (remoteOrders.length > 0) {
+          next.orders = remoteOrders;
+          hasUpdate = true;
+        }
+      }
+
+      if (userData.status === 'fulfilled' && Array.isArray(userData.value?.items)) {
+        next.registeredUsers = userData.value.items;
+        hasUpdate = true;
+      }
+
+      if (artData.status === 'fulfilled' && Array.isArray(artData.value?.items)) {
+        next.articles = artData.value.items.map(a => ({
+          ...a,
+          published: a.published !== false
+        }));
+        hasUpdate = true;
+      }
+
+      if (hasUpdate) {
+        commit(next);
+        window.dispatchEvent(new CustomEvent('macca:new-order'));
+        window.dispatchEvent(new CustomEvent('macca:articles-synced'));
+      }
+    } catch (err) {
+      console.warn('Lỗi khi đồng bộ dữ liệu quản trị từ máy chủ:', err.message);
+    }
+  }
+
+  async function saveProduct(product) {
     if (!validProduct(product)) throw new Error('Kiểm tra tên, quy cách, giá bán và tồn kho của sản phẩm.');
+    
+    // Call backend API if authenticated
+    if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+      try {
+        const exists = snapshot.products.some(p => p.id === product.id);
+        const method = exists ? 'PUT' : 'POST';
+        const url = exists ? '/api/admin/products/' + encodeURIComponent(product.id) : '/api/admin/products';
+        await window.MaccaApi.request(url, { method, body: product, auth: true });
+      } catch (err) {
+        if (err.status && err.status !== 500) throw err;
+        console.warn('Backend chưa sẵn sàng khi lưu sản phẩm, cập nhật bộ nhớ cục bộ:', err.message);
+      }
+    }
+
     const next = clone(snapshot);
     const index = next.products.findIndex(p => p.id === product.id);
     if (index < 0) next.products.push(clone(product)); else next.products[index] = clone(product);
     return commit(next);
   }
-  function deleteProduct(id) {
+
+  async function deleteProduct(id) {
+    if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+      try {
+        await window.MaccaApi.request('/api/admin/products/' + encodeURIComponent(id), { method: 'DELETE', auth: true });
+      } catch (err) {
+        if (err.status && err.status !== 500) throw err;
+        console.warn('Backend chưa sẵn sàng khi xóa sản phẩm, cập nhật bộ nhớ cục bộ:', err.message);
+      }
+    }
+
     const next = clone(snapshot);
     next.products = next.products.filter(p => p.id !== id);
     return commit(next);
   }
-  function createOrder(customer, lines, shipping, note) {
+
+  async function createOrder(customer, lines, shipping, note) {
     const quantities = new Map();
     for (const line of lines) {
       if (!integer(line.quantity, 1, 99)) throw new Error('Số lượng mỗi sản phẩm phải là số nguyên từ 1 đến 99.');
@@ -130,33 +245,214 @@ window.MaccaAdmin = (() => {
       if (quantity > 99) throw new Error('Tổng số lượng mỗi sản phẩm không được vượt quá 99.');
       return { id, name: product.name, weight: product.weight, price: product.price, quantity };
     });
-    const order = { id: 'TT-' + crypto.randomUUID().slice(0, 8).toUpperCase(), createdAt: new Date().toISOString(), customer: clone(customer), items, shipping, note, status: 'pending' };
+
+    let createdId = 'TT-' + crypto.randomUUID().slice(0, 8).toUpperCase();
+    let createdAt = new Date().toISOString();
+
+    if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+      try {
+        const res = await window.MaccaApi.request('/api/admin/orders', {
+          method: 'POST',
+          body: {
+            user: {
+              name: customer.name,
+              phone: customer.phone.replace(/\D/g, '') || '0900000000',
+              email: customer.email || '',
+              address: customer.address
+            },
+            items: items.map(i => ({ id: i.id, quantity: i.quantity })),
+            shippingFee: shipping,
+            note: note || ''
+          },
+          auth: true
+        });
+        if (res?.id) createdId = res.id;
+        if (res?.createdAt) createdAt = res.createdAt;
+      } catch (err) {
+        if (err.status && err.status !== 500) throw err;
+        console.warn('Backend chưa sẵn sàng khi tạo đơn hàng, lưu bộ nhớ cục bộ:', err.message);
+      }
+    }
+
+    const order = { id: createdId, createdAt, customer: clone(customer), items, shipping, note, status: 'pending' };
     if (!validOrder(order)) throw new Error('Kiểm tra thông tin khách hàng, số điện thoại, email, sản phẩm và phí giao hàng.');
     const next = clone(snapshot);
     next.orders.unshift(order);
     return commit(next);
   }
-  function updateStatus(id, status) {
+
+  async function updateStatus(id, status) {
     if (!Object.hasOwn(statuses, status)) throw new Error('Trạng thái không hợp lệ.');
+
+    if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+      try {
+        await window.MaccaApi.request('/api/admin/orders/' + encodeURIComponent(id) + '/status', {
+          method: 'PATCH',
+          body: { status },
+          auth: true
+        });
+      } catch (err) {
+        if (err.status && err.status !== 500) throw err;
+        console.warn('Backend chưa sẵn sàng khi cập nhật trạng thái đơn, lưu bộ nhớ cục bộ:', err.message);
+      }
+    }
+
     const next = clone(snapshot);
     const order = next.orders.find(o => o.id === id);
     if (!order) throw new Error('Không tìm thấy đơn hàng.');
     order.status = status;
     return commit(next);
   }
-  const total = order => order.items.reduce((sum, i) => sum + i.price * i.quantity, order.shipping);
+
+  const total = order => (typeof order.total === 'number' && order.total > 0) ? order.total : order.items.reduce((sum, i) => sum + (Number(i.price) || 0) * (Number(i.quantity) || 1), Number(order.shipping) || 0);
+
   function customers(orders) {
     const grouped = new Map();
-    // Newest order supplies current contact details; phone is the grouping key.
-    for (const order of [...orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt))) {
-      const phone = order.customer.phone;
-      if (!grouped.has(phone)) grouped.set(phone, { ...order.customer, orders: 0, completed: 0 });
-      const customer = grouped.get(phone);
-      customer.orders++;
-      if (order.status === 'completed') customer.completed += total(order);
+    const regUsers = snapshot.registeredUsers || [];
+
+    // 1. Seed registered users from database
+    for (const u of regUsers) {
+      const key = (u.phone || String(u.id)).trim();
+      if (key) {
+        grouped.set(key, {
+          name: u.name || 'Khách hàng',
+          phone: u.phone || '',
+          email: u.email || '',
+          address: u.address || '',
+          isRegistered: true,
+          userId: u.id,
+          role: u.role || 'USER',
+          orders: 0,
+          completed: 0,
+          orderList: []
+        });
+      }
     }
+
+    // 2. Aggregate orders
+    for (const order of [...orders].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))) {
+      const phone = (order.customer?.phone || order.user?.phone || 'unknown').trim();
+      if (!grouped.has(phone)) {
+        grouped.set(phone, {
+          name: order.customer?.name || order.user?.name || 'Khách vãng lai',
+          phone: order.customer?.phone || '',
+          email: order.customer?.email || order.user?.email || '',
+          address: order.customer?.address || order.user?.address || '',
+          isRegistered: !!(order.isRegistered || order.user?.id),
+          userId: order.userId || order.user?.id || null,
+          orders: 0,
+          completed: 0,
+          orderList: []
+        });
+      }
+      const customer = grouped.get(phone);
+      if (order.isRegistered || order.user?.id) {
+        customer.isRegistered = true;
+        customer.userId = order.userId || order.user?.id;
+      }
+      if (!customer.address && order.customer?.address) {
+        customer.address = order.customer.address;
+      }
+      customer.orders++;
+      customer.orderList.push(order);
+      if (order.status === 'completed') {
+        customer.completed += total(order);
+      }
+    }
+
     return [...grouped.values()];
   }
+
+  async function getArticles() {
+    if (window.MaccaApi?.request) {
+      try {
+        const session = window.MaccaApi.getSession();
+        const hasAuth = !!(session?.accessToken || session?.token);
+        const url = hasAuth ? '/api/admin/articles?limit=100' : '/api/articles?limit=100';
+        const res = await window.MaccaApi.request(url, hasAuth ? { auth: true } : {});
+        const items = res?.items || (Array.isArray(res) ? res : []);
+        if (items.length > 0) {
+          const next = clone(snapshot);
+          next.articles = items.map(a => ({
+            ...a,
+            published: a.published !== false
+          }));
+          commit(next);
+          return next.articles;
+        }
+      } catch (e) {}
+    }
+    if (snapshot.articles && snapshot.articles.length > 0) {
+      return snapshot.articles;
+    }
+    return (typeof MaccaJournal !== 'undefined') ? MaccaJournal.map(a => ({ ...a, published: a.published !== false })) : [];
+  }
+
+  async function saveArticle(articleData, slug) {
+    let saved = null;
+    if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+      try {
+        const method = slug ? 'PUT' : 'POST';
+        const url = slug ? '/api/admin/articles/' + encodeURIComponent(slug) : '/api/admin/articles';
+        saved = await window.MaccaApi.request(url, {
+          method,
+          body: articleData,
+          auth: true
+        });
+      } catch (err) {
+        if (err.status && err.status !== 500) throw err;
+        console.warn('Backend chưa sẵn sàng khi lưu bài viết, lưu bộ nhớ cục bộ:', err.message);
+      }
+    }
+
+    const next = clone(snapshot);
+    if (!Array.isArray(next.articles)) {
+      next.articles = (typeof MaccaJournal !== 'undefined') ? clone(MaccaJournal) : [];
+    }
+    const targetSlug = slug || articleData.slug;
+    const index = next.articles.findIndex(a => a.slug === targetSlug);
+    const itemToSave = {
+      ...articleData,
+      slug: targetSlug || ('bai-viet-' + Date.now()),
+      published: articleData.published !== false
+    };
+    if (index >= 0) {
+      next.articles[index] = { ...next.articles[index], ...itemToSave };
+    } else {
+      next.articles.unshift(itemToSave);
+    }
+    commit(next);
+    await syncBackend();
+    return saved || itemToSave;
+  }
+
+  async function deleteArticle(slug) {
+    if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+      try {
+        await window.MaccaApi.request('/api/admin/articles/' + encodeURIComponent(slug), {
+          method: 'DELETE',
+          auth: true
+        });
+      } catch (err) {
+        if (err.status && err.status !== 500) throw err;
+        console.warn('Backend chưa sẵn sàng khi xóa bài viết, xóa bộ nhớ cục bộ:', err.message);
+      }
+    }
+
+    const next = clone(snapshot);
+    if (Array.isArray(next.articles)) {
+      next.articles = next.articles.filter(a => a.slug !== slug);
+      commit(next);
+    }
+    await syncBackend();
+    return true;
+  }
+
   reload();
-  return { key, categories, statuses, images, reload, getState: () => clone(snapshot), getError: () => loadError, saveProduct, deleteProduct, createOrder, updateStatus, total, customers };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => syncBackend());
+  } else {
+    syncBackend();
+  }
+  return { key, categories, statuses, images, reload, syncBackend, getState: () => clone(snapshot), getError: () => loadError, saveProduct, deleteProduct, createOrder, updateStatus, total, customers, getArticles, saveArticle, deleteArticle };
 })();

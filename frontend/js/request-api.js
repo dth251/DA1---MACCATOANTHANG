@@ -122,6 +122,84 @@ window.MaccaRequests = (() => {
   }
 
   async function submitRequest(payload) {
+    const idempotencyKey = payload.idempotencyKey || (window.crypto?.randomUUID ? crypto.randomUUID() : 'req-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9));
+
+    // Normalize phone to Vietnamese 10 digits starting with 0
+    let rawPhone = payload.customer?.phone || '';
+    let phone = rawPhone.replace(/\D/g, '');
+    if (phone.startsWith('84')) phone = '0' + phone.slice(2);
+    if (!phone.startsWith('0') && phone.length === 9) phone = '0' + phone;
+    if (!phone) phone = '0900000000'; // fallback for contact/consult if omitted
+
+    const fullAddress = [payload.customer?.address, payload.customer?.ward, payload.customer?.province].filter(Boolean).join(', ') || payload.customer?.address || 'Tại cửa hàng / Chưa nhập';
+
+    const userInput = {
+      name: payload.customer?.name || 'Khách hàng',
+      phone: phone,
+      email: payload.customer?.email || '',
+      address: fullAddress,
+      ward: payload.customer?.ward || '',
+      province: payload.customer?.province || ''
+    };
+
+    let items = undefined;
+    if (Array.isArray(payload.items) && payload.items.length > 0) {
+      items = payload.items.map(item => ({
+        id: item.id,
+        quantity: Number(item.quantity) || 1
+      }));
+    }
+
+    const body = {
+      type: payload.type || 'consult',
+      idempotencyKey,
+      user: userInput,
+      items,
+      shipping: payload.shipping === 'express' ? 'express' : 'standard',
+      payment: 'cod',
+      topic: payload.topic || (payload.type === 'consult' ? 'Tư vấn sản phẩm' : 'Lời nhắn liên hệ'),
+      message: payload.message || payload.note || 'Yêu cầu từ website',
+      details: payload.details || {},
+      expectedTotal: typeof payload.expectedTotal === 'number' ? payload.expectedTotal : undefined
+    };
+
+    if (window.MaccaApi?.request) {
+      try {
+        const responseData = await window.MaccaApi.request('/api/requests', {
+          method: 'POST',
+          body,
+          auth: true,
+          headers: { 'Idempotency-Key': idempotencyKey }
+        });
+
+        const reqId = responseData?.id || (payload.type === 'order' ? 'DH-' + Date.now() : 'YC-' + Date.now());
+        const eventDetail = { id: reqId, type: payload.type, ...responseData };
+        window.dispatchEvent(new CustomEvent('macca:new-request', { detail: eventDetail }));
+        if (payload.type === 'order') {
+          window.dispatchEvent(new CustomEvent('macca:new-order', { detail: eventDetail }));
+        }
+
+        return {
+          ok: true,
+          id: reqId,
+          orderId: reqId,
+          createdAt: responseData?.createdAt || new Date().toISOString(),
+          shippingFee: payload.shipping === 'express' ? 45000 : 30000,
+          total: payload.expectedTotal,
+          items: payload.items,
+          message: payload.type === 'order'
+            ? 'Đơn hàng của quý khách đã được ghi nhận thành công vào hệ thống!'
+            : 'Yêu cầu đã được gửi thành công! Đội ngũ Macca Toàn Thắng sẽ liên hệ sớm nhất.'
+        };
+      } catch (err) {
+        // If server reported specific business error (e.g. price changed, invalid validation), throw directly
+        if (err.status && err.status !== 500 && err.status !== 502 && err.status !== 503) {
+          throw err;
+        }
+        console.warn('Backend chưa sẵn sàng hoặc lỗi kết nối, chuyển lưu dự phòng cục bộ:', err.message);
+      }
+    }
+
     await new Promise(r => setTimeout(r, 60));
 
     if (payload.type === 'order') {
@@ -129,7 +207,11 @@ window.MaccaRequests = (() => {
       return {
         ok: res.ok,
         id: res.orderId,
+        orderId: res.orderId,
         createdAt: res.createdAt,
+        shippingFee: payload.shipping === 'express' ? 45000 : 30000,
+        total: payload.expectedTotal,
+        items: payload.items,
         message: res.message
       };
     }
@@ -192,6 +274,8 @@ window.MaccaRequests = (() => {
           customer: payload.customer,
           items: payload.items,
           status: 'pending',
+          shippingFee: result.shippingFee || (payload.shipping === 'express' ? 45000 : 30000),
+          total: result.total || payload.expectedTotal,
           ...result
         };
       } finally {

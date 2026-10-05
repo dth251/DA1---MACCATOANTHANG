@@ -1,1 +1,373 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#243f30"><meta name="description" content="Tạo yêu cầu tư vấn — Macca Toàn Thắng"><title>Tạo yêu cầu tư vấn | Macca Toàn Thắng</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon.png" type="image/png"><link rel="apple-touch-icon" href="assets/favicon.png"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/commerce.css"><script src="js/store.js" defer></script><script src="js/request-api.js" defer></script><script src="js/commerce.js" defer></script><link rel="stylesheet" href="css/owner-contact.css"><script src="js/owner-contact.js" defer></script></head><body class="commerce-page" data-page="consult"><a class="skip-link" href="#main">Đến nội dung chính</a><header class="header"><a class="brand" href="index.html" aria-label="Macca Toàn Thắng — Trang chủ"><img class="brand-logo" src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64"></a><nav aria-label="Điều hướng chính"><a href="index.html">Trang chủ</a><a href="san-pham.html">Sản phẩm</a><a href="cau-chuyen.html">Câu chuyện của chúng tôi</a><a href="goc-macca.html">Góc macca</a><a href="lien-he.html">Liên hệ</a></nav><a class="cart-button" href="gio-hang.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg><span>Giỏ hàng</span><b id="cart-count">0</b></a></header><p id="storage-warning" class="storage-warning" role="alert" hidden>Trình duyệt đang chặn lưu dữ liệu. Hãy cho phép lưu dữ liệu trang web để giữ giỏ hàng khi chuyển trang.</p><main id="main" class="page-shell"><div class="breadcrumbs" aria-label="Đường dẫn"><a href="index.html">Trang chủ</a><span aria-hidden="true">/</span><span>Yêu cầu tư vấn</span></div><div class="page-intro"><div><p class="eyebrow">CHÚNG TÔI LUÔN SẴN SÀNG LẮNG NGHE</p><h1>Mỗi nhu cầu, một lựa chọn riêng.</h1><p>Chia sẻ điều bạn đang tìm kiếm để chuẩn bị một yêu cầu thật rõ ràng.</p></div></div><div class="commerce-grid consult-grid" id="consult-layout"><aside class="consult-info"><img class="consult-photo" src="assets/macca-hero.png" alt="Bát macca bên cành lá xanh" width="1536" height="1024"><h2>Cùng bạn chọn<br>món quà từ thiên nhiên.</h2><p>Từ một hộp macca dùng mỗi ngày đến những món quà dành cho cả doanh nghiệp.</p><ol class="service-points"><li><b>01</b><span><strong>Chọn sản phẩm phù hợp</strong><small>Theo khẩu vị, quy cách và ngân sách.</small></span></li><li><b>02</b><span><strong>Chuẩn bị quà tặng</strong><small>Chia sẻ số lượng và thời điểm bạn cần.</small></span></li><li><b>03</b><span><strong>Trao đổi nhu cầu hợp tác</strong><small>Đại lý, phân phối và đơn hàng số lượng lớn.</small></span></li></ol><details><summary>Tôi nên chuẩn bị những thông tin gì?</summary><p>Loại sản phẩm, số lượng dự kiến, ngân sách và thời điểm mong muốn nhận hàng sẽ giúp yêu cầu cụ thể hơn.</p></details><details><summary>Yêu cầu này đã được gửi đến cửa hàng chưa?</summary><p>Sau khi bạn gửi và nhận được mã yêu cầu, nội dung đã được lưu vào hộp thư quản trị của cửa hàng.</p></details></aside><section class="panel"><h2>Thông tin yêu cầu</h2><p class="fine-print">Các trường có dấu * là bắt buộc.</p><form id="consult-form"><div class="field-grid"><label class="field">Họ và tên <span class="required">*</span><input name="name" required maxlength="100" autocomplete="name" placeholder="Nhập họ và tên"></label><label class="field">Số điện thoại <span class="required">*</span><input name="phone" type="tel" required pattern="[+]?[0-9 ]{9,15}" autocomplete="tel" placeholder="Ví dụ: 0901234567"></label><label class="field">Email<input name="email" type="email" maxlength="150" autocomplete="email" placeholder="Email nhận thông tin (không bắt buộc)"></label><label class="field">Tên doanh nghiệp<input name="company" maxlength="150" autocomplete="organization" placeholder="Nếu bạn mua cho doanh nghiệp"></label><label class="field field-full">Bạn cần tư vấn về <span class="required">*</span><select name="topic" required><option value="personal">Sản phẩm dùng cá nhân / gia đình</option><option value="gift">Quà tặng cá nhân / doanh nghiệp</option><option value="wholesale">Đơn hàng số lượng lớn / đại lý</option><option value="other">Nhu cầu khác</option></select></label><label class="field">Số lượng dự kiến<input name="quantity" type="number" min="1" max="100000" step="1" placeholder="Ví dụ: 50"></label><label class="field">Ngân sách dự kiến<select name="budget"><option value="Chưa xác định">Chưa xác định</option><option>Dưới 1 triệu đồng</option><option>Từ 1 đến 5 triệu đồng</option><option>Từ 5 đến 20 triệu đồng</option><option>Trên 20 triệu đồng</option></select></label><label class="field field-full">Nội dung cần tư vấn <span class="required">*</span><textarea name="message" required minlength="10" maxlength="2000" rows="5" placeholder="Sản phẩm quan tâm, thời gian cần nhận, mong muốn về hộp quà…"></textarea><small>Từ 10 đến 2.000 ký tự.</small></label></div><label class="checkbox-line"><input name="acknowledge" type="checkbox" required><span>Tôi đồng ý gửi thông tin trên để cửa hàng tư vấn và liên hệ lại.</span></label><p id="consult-error" class="field-error" role="alert"></p><div class="form-actions"><span>Thông tin cá nhân không được lưu vào giỏ hàng.</span><button class="button" type="submit">Gửi yêu cầu tư vấn <span>↗</span></button></div></form></section></div><section id="consult-success" class="success-panel" hidden tabindex="-1"><div class="success-icon" aria-hidden="true">✓</div><p class="eyebrow">ĐÃ GỬI YÊU CẦU TƯ VẤN</p><h1>Một bước gần hơn đến lựa chọn của bạn.</h1><p>Yêu cầu đã được gửi đến cửa hàng.<br>Vui lòng lưu mã yêu cầu để tiện theo dõi và trao đổi.</p><pre class="receipt" id="consult-receipt"></pre><div class="success-actions"><button id="download-consult" class="button">Tải bản yêu cầu ↓</button><button id="edit-consult" class="button button-outline">Gửi yêu cầu khác</button></div></section></main><aside class="owner-contact-dock" aria-label="Kênh liên hệ Macca Toàn Thắng"><a class="dock-link dock-phone" href="tel:0988245476" data-contact-channel="phone" data-tooltip="Hotline: 0988 245 476" aria-label="Gọi điện hotline 0988 245 476" title="Hotline: 0988 245 476"><img src="assets/phone-icon.png" alt="Điện thoại" width="47" height="47"></a><a class="dock-link dock-zalo" href="https://zalo.me/0988245476" target="_blank" rel="noopener noreferrer" data-contact-channel="zalo" data-tooltip="Chat Zalo: 0988 245 476" aria-label="Nhắn tin qua Zalo Macca Toàn Thắng" title="Chat Zalo: 0988 245 476"><img src="assets/zalo-icon.png" alt="Zalo" width="36" height="36"></a><a class="dock-link dock-facebook" href="https://facebook.com/maccatoanthang" target="_blank" rel="noopener noreferrer" data-contact-channel="facebook" data-tooltip="Facebook: Macca Toàn Thắng" aria-label="Truy cập Fanpage Facebook Macca Toàn Thắng" title="Facebook: Macca Toàn Thắng"><img src="assets/facebook-icon.png" alt="Facebook" width="47" height="47"></a><a class="dock-link dock-gmail" href="mailto:maccatoanthang@gmail.com?subject=T%C6%B0%20v%E1%BA%A5n%20Macca%20To%C3%A0n%20Th%E1%BA%AFng" data-contact-channel="gmail" data-tooltip="Gmail: maccatoanthang@gmail.com" aria-label="Gửi email tới maccatoanthang@gmail.com" title="Gmail: maccatoanthang@gmail.com"><img src="assets/gmail-icon.png" alt="Gmail" width="34" height="34"></a></aside><footer class="simple-footer"><span>© <span id="year"></span> Macca Toàn Thắng · Tinh túy từ thiên nhiên.</span><span><a href="tu-van.html">Cần hỗ trợ? Tạo yêu cầu tư vấn ↗</a></span></footer><div id="toast" role="status" aria-live="polite"></div><noscript><p class="noscript">Vui lòng bật JavaScript để sử dụng giỏ hàng và biểu mẫu.</p></noscript></body></html>
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#243f30">
+  <meta name="description" content="Tạo yêu cầu tư vấn — Macca Toàn Thắng">
+  <title>Tạo yêu cầu tư vấn | Macca Toàn Thắng</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/styles.css?v=20261004d">
+  <link rel="stylesheet" href="css/auth.css?v=20261004d">
+  <link rel="stylesheet" href="css/commerce.css?v=20261004d">
+  <script src="js/api-client.js?v=20261004d" defer></script>
+  <script src="js/auth.js?v=20261004d" defer></script>
+  <script src="js/store.js?v=20261004d" defer></script>
+  <script src="js/request-api.js?v=20261004d" defer></script>
+  <script src="js/commerce.js?v=20261004d" defer></script>
+  <link rel="stylesheet" href="css/owner-contact.css?v=20261004d">
+  <script src="js/owner-contact.js?v=20261004d" defer></script>
+</head>
+
+<body class="commerce-page" data-page="consult">
+  <a class="skip-link" href="#main">Đến nội dung chính</a>
+
+  <header class="header">
+    <a class="brand" href="index.html" aria-label="Macca Toàn Thắng — Trang chủ">
+      <img class="brand-logo" src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64">
+    </a>
+    <nav aria-label="Điều hướng chính">
+      <a href="index.html">Trang chủ</a>
+      <a href="san-pham.html">Sản phẩm</a>
+      <a href="cau-chuyen.html">Câu chuyện của chúng tôi</a>
+      <a href="goc-macca.html">Góc macca</a>
+      <a href="lien-he.html">Liên hệ</a>
+    </nav>
+    <div class="header-actions">
+      <a class="cart-button" href="gio-hang.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 7h14l1 14H4L5 7Z" />
+          <path d="M8 8V6a4 4 0 0 1 8 0v2" />
+        </svg>
+        <span>Giỏ hàng</span>
+        <b id="cart-count">0</b>
+      </a>
+      <span class="divider"></span>
+      <div class="header-auth" aria-label="Tài khoản"></div>
+    </div>
+  </header>
+
+  <p id="storage-warning" class="storage-warning" role="alert" hidden>
+    Trình duyệt đang chặn lưu dữ liệu. Hãy cho phép lưu dữ liệu trang web để giữ giỏ hàng khi chuyển trang.
+  </p>
+
+  <main id="main" class="page-shell">
+    <div class="breadcrumbs" aria-label="Đường dẫn">
+      <a href="index.html">Trang chủ</a>
+      <span aria-hidden="true">/</span>
+      <span>Yêu cầu tư vấn</span>
+    </div>
+
+    <div class="page-intro" id="consult-intro">
+      <div>
+        <p class="eyebrow">CHÚNG TÔI LUÔN SẴN SÀNG LẮNG NGHE</p>
+        <h1>Mỗi nhu cầu, một lựa chọn riêng.</h1>
+        <p>Chia sẻ điều bạn đang tìm kiếm để chuẩn bị một yêu cầu thật rõ ràng.</p>
+      </div>
+    </div>
+
+    <!-- KHỐI FORM ĐIỀN THÔNG TIN TƯ VẤN -->
+    <div class="commerce-grid consult-grid" id="consult-layout">
+      <aside class="consult-info">
+        <img class="consult-photo" src="assets/macca-hero.png" alt="Bát macca bên cành lá xanh" width="1536"
+          height="1024">
+        <h2>Cùng bạn chọn<br>món quà từ thiên nhiên.</h2>
+        <p>Từ một hộp macca dùng mỗi ngày đến những món quà dành cho cả doanh nghiệp.</p>
+        <ol class="service-points">
+          <li>
+            <b>01</b>
+            <span>
+              <strong>Chọn sản phẩm phù hợp</strong>
+              <small>Theo khẩu vị, quy cách và ngân sách.</small>
+            </span>
+          </li>
+          <li>
+            <b>02</b>
+            <span>
+              <strong>Chuẩn bị quà tặng</strong>
+              <small>Chia sẻ số lượng và thời điểm bạn cần.</small>
+            </span>
+          </li>
+          <li>
+            <b>03</b>
+            <span>
+              <strong>Trao đổi nhu cầu hợp tác</strong>
+              <small>Đại lý, phân phối và đơn hàng số lượng lớn.</small>
+            </span>
+          </li>
+        </ol>
+        <details>
+          <summary>Tôi nên chuẩn bị những thông tin gì?</summary>
+          <p>Loại sản phẩm, số lượng dự kiến, ngân sách và thời điểm mong muốn nhận hàng sẽ giúp yêu cầu cụ thể hơn.</p>
+        </details>
+        <details>
+          <summary>Yêu cầu này đã được gửi đến cửa hàng chưa?</summary>
+          <p>Sau khi bạn xác nhận và nhận được mã yêu cầu, nội dung đã được lưu vào hộp thư quản trị của cửa hàng.</p>
+        </details>
+      </aside>
+
+      <section class="panel">
+        <h2>Thông tin yêu cầu</h2>
+        <p class="fine-print">Các trường có dấu * là bắt buộc.</p>
+
+        <form id="consult-form">
+          <div class="field-grid">
+            <label class="field">
+              Họ và tên <span class="required">*</span>
+              <input name="name" required maxlength="100" autocomplete="name" placeholder="Nhập họ và tên">
+            </label>
+
+            <label class="field">
+              Số điện thoại <span class="required">*</span>
+              <input name="phone" type="tel" required pattern="[+]?[0-9 ]{9,15}" autocomplete="tel"
+                placeholder="Ví dụ: 0901234567">
+            </label>
+
+            <label class="field">
+              Email
+              <input name="email" type="email" maxlength="150" autocomplete="email"
+                placeholder="Email nhận thông tin (không bắt buộc)">
+            </label>
+
+            <label class="field">
+              Tên doanh nghiệp
+              <input name="company" maxlength="150" autocomplete="organization"
+                placeholder="Nếu bạn mua cho doanh nghiệp">
+            </label>
+
+            <label class="field field-full">
+              Bạn cần tư vấn về <span class="required">*</span>
+              <select name="topic" required>
+                <option value="personal">Sản phẩm dùng cá nhân / gia đình</option>
+                <option value="gift">Quà tặng cá nhân / doanh nghiệp</option>
+                <option value="wholesale">Đơn hàng số lượng lớn / đại lý</option>
+                <option value="other">Nhu cầu khác</option>
+              </select>
+            </label>
+
+            <label class="field">
+              Số lượng dự kiến
+              <input name="quantity" type="number" min="1" max="100000" step="1" placeholder="Ví dụ: 50">
+            </label>
+
+            <label class="field">
+              Ngân sách dự kiến
+              <select name="budget">
+                <option value="Chưa xác định">Chưa xác định</option>
+                <option>Dưới 1 triệu đồng</option>
+                <option>Từ 1 đến 5 triệu đồng</option>
+                <option>Từ 5 đến 20 triệu đồng</option>
+                <option>Trên 20 triệu đồng</option>
+              </select>
+            </label>
+
+            <label class="field field-full">
+              Nội dung cần tư vấn <span class="required">*</span>
+              <textarea name="message" required minlength="10" maxlength="2000" rows="5"
+                placeholder="Sản phẩm quan tâm, thời gian cần nhận, mong muốn về hộp quà…"></textarea>
+              <small>Từ 10 đến 2.000 ký tự.</small>
+            </label>
+          </div>
+
+          <label class="checkbox-line">
+            <input name="acknowledge" type="checkbox" required>
+            <span>Tôi đồng ý gửi thông tin trên để cửa hàng tư vấn và liên hệ lại.</span>
+          </label>
+
+          <p id="consult-error" class="field-error" role="alert"></p>
+
+          <div class="form-actions">
+            <span>Thông tin cá nhân không được lưu vào giỏ hàng.</span>
+            <button class="button" type="submit">Tiến hành gửi yêu cầu <span>↗</span></button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- SECTION BILL TIẾP NHẬN YÊU CẦU TƯ VẤN THÀNH CÔNG -->
+    <section id="consult-success" class="order-success-section" hidden tabindex="-1">
+      <div class="success-badge-card">
+        <div class="success-icon-wrapper" aria-hidden="true">
+          <svg class="success-checkmark" viewBox="0 0 52 52" width="68" height="68">
+            <circle class="checkmark-circle" cx="26" cy="26" r="24" />
+            <path class="checkmark-check" d="M14 27l8 8 16-16" />
+          </svg>
+        </div>
+        <p class="eyebrow success-eyebrow">ĐÃ GỬI YÊU CẦU TƯ VẤN THÀNH CÔNG</p>
+        <h1 class="success-title">Cảm ơn bạn đã gửi yêu cầu!</h1>
+        <p class="success-desc">Yêu cầu tư vấn của quý khách đã được tiếp nhận thành công vào hệ thống. Đội ngũ <strong>Macca Toàn Thắng</strong> sẽ liên hệ sớm nhất qua số điện thoại để tư vấn và hỗ trợ chi tiết!</p>
+      </div>
+
+      <div class="invoice-card" id="consult-invoice-card">
+        <div class="invoice-header">
+          <div class="invoice-brand">
+            <img src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" class="invoice-logo" width="200" height="49">
+            <p class="invoice-company">CÔNG TY TNHH MACCA TOÀN THẮNG</p>
+            <p class="invoice-contact-line">· Hotline: <strong data-contact="phone">0975.895.024</strong> · Website: maccatoanthang.com</p>
+          </div>
+          <div class="invoice-title-block">
+            <h2 class="invoice-heading">PHIẾU TIẾP NHẬN YÊU CẦU TƯ VẤN</h2>
+            <span class="invoice-status-tag" id="consult-status-tag">Đã tiếp nhận</span>
+          </div>
+        </div>
+
+        <div class="invoice-meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">MÃ YÊU CẦU</span>
+            <div class="meta-code-wrap">
+              <strong class="meta-value order-code" id="consult-inv-code">---</strong>
+              <button type="button" class="btn-copy-code" id="btn-copy-consult-code" title="Sao chép mã yêu cầu">Sao chép</button>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">NGÀY GỬI YÊU CẦU</span>
+            <span class="meta-value" id="consult-inv-date">---</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">HỌ VÀ TÊN</span>
+            <strong class="meta-value" id="consult-inv-name">---</strong>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">SỐ ĐIỆN THOẠI</span>
+            <span class="meta-value" id="consult-inv-phone">---</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">EMAIL LIÊN HỆ</span>
+            <span class="meta-value" id="consult-inv-email">Không cung cấp</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">DOANH NGHIỆP / ĐƠN VỊ</span>
+            <span class="meta-value" id="consult-inv-company">Cá nhân</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">NHU CẦU TƯ VẤN</span>
+            <strong class="meta-value" id="consult-inv-topic">---</strong>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">SỐ LƯỢNG &amp; NGÂN SÁCH</span>
+            <span class="meta-value" id="consult-inv-budget">---</span>
+          </div>
+        </div>
+
+        <div class="invoice-message-box">
+          <h3 class="invoice-message-title">Nội dung chi tiết yêu cầu tư vấn</h3>
+          <p class="invoice-message-content" id="consult-inv-message">---</p>
+        </div>
+
+        <div class="invoice-footer-note">
+          <p><em>Yêu cầu đã được lưu vào hộp thư quản trị. Chúng tôi sẽ phản hồi trong vòng 24 giờ. Hotline hỗ trợ: <strong data-contact="phone">0975.895.024</strong>.</em></p>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <button class="button button-print" id="print-consult" type="button">In phiếu yêu cầu</button>
+        <button class="button button-outline" id="download-consult" type="button">Tải phiếu (.txt)</button>
+        <button class="button button-outline" id="edit-consult" type="button">Gửi yêu cầu khác</button>
+        <a class="button button-subtle" href="index.html">Về trang chủ</a>
+      </div>
+    </section>
+
+    <!-- HỘP THOẠI XÁC NHẬN GỬI YÊU CẦU TƯ VẤN (CONFIRM MODAL) -->
+    <div id="consult-confirm-modal" class="confirm-modal-overlay" hidden role="dialog" aria-modal="true"
+      aria-labelledby="modal-consult-title">
+      <div class="confirm-modal-card">
+        <div class="confirm-modal-header">
+          <div>
+            <h3 class="confirm-modal-title" id="modal-consult-title">Xác nhận gửi yêu cầu tư vấn</h3>
+            <p class="confirm-modal-subtitle">Vui lòng kiểm tra lại thông tin trước khi gửi tới cửa hàng</p>
+          </div>
+          <button type="button" class="confirm-modal-close" id="btn-consult-modal-close" aria-label="Đóng">&times;</button>
+        </div>
+
+        <div class="confirm-modal-body">
+          <div class="confirm-summary-box">
+            <div class="confirm-row">
+              <span class="confirm-label">Họ và tên:</span>
+              <strong class="confirm-val" id="modal-consult-name">---</strong>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Số điện thoại:</span>
+              <strong class="confirm-val" id="modal-consult-phone">---</strong>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Email:</span>
+              <span class="confirm-val" id="modal-consult-email">Chưa cung cấp</span>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Tên doanh nghiệp:</span>
+              <span class="confirm-val" id="modal-consult-company">Cá nhân</span>
+            </div>
+            <div class="confirm-divider"></div>
+            <div class="confirm-row">
+              <span class="confirm-label">Nhu cầu tư vấn:</span>
+              <span class="confirm-val" id="modal-consult-topic">---</span>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Số lượng dự kiến:</span>
+              <span class="confirm-val" id="modal-consult-qty">Chưa xác định</span>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Ngân sách dự kiến:</span>
+              <span class="confirm-val" id="modal-consult-budget">Chưa xác định</span>
+            </div>
+            <div class="confirm-divider"></div>
+            <div class="confirm-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
+              <span class="confirm-label">Nội dung yêu cầu:</span>
+              <div class="confirm-val" id="modal-consult-msg" style="text-align:left;line-height:1.5;color:#243f30;background:#f0f4ea;padding:10px 12px;border-radius:6px;width:100%;font-size:13.5px;box-sizing:border-box;">---</div>
+            </div>
+          </div>
+          <p class="confirm-tip">
+            Đội ngũ <strong>Macca Toàn Thắng</strong> sẽ tiếp nhận yêu cầu và liên hệ lại với bạn trong thời gian sớm nhất.
+          </p>
+        </div>
+
+        <div class="confirm-modal-footer">
+          <button type="button" class="button button-outline" id="btn-consult-modal-cancel">Quay lại sửa</button>
+          <button type="button" class="button button-confirm" id="btn-consult-modal-accept">
+            <span>Xác nhận gửi yêu cầu</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="owner-contact-dock" aria-label="Kênh liên hệ Macca Toàn Thắng">
+    <a class="dock-link dock-phone" href="tel:0975895024" data-contact-channel="phone"
+      data-tooltip="Hotline: 0975.895.024" aria-label="Gọi điện hotline 0975.895.024" title="Hotline: 0975.895.024">
+      <img src="assets/phone-icon.png" alt="Điện thoại" width="47" height="47">
+    </a>
+    <a class="dock-link dock-zalo" href="https://zalo.me/0975895024" target="_blank" rel="noopener noreferrer"
+      data-contact-channel="zalo" data-tooltip="Chat Zalo: 0975.895.024"
+      aria-label="Nhắn tin qua Zalo Macca Toàn Thắng" title="Chat Zalo: 0975.895.024">
+      <img src="assets/zalo-icon.png" alt="Zalo" width="36" height="36">
+    </a>
+    <a class="dock-link dock-facebook" href="https://facebook.com/maccatoanthang" target="_blank"
+      rel="noopener noreferrer" data-contact-channel="facebook" data-tooltip="Facebook: Macca Toàn Thắng"
+      aria-label="Truy cập Fanpage Facebook Macca Toàn Thắng" title="Facebook: Macca Toàn Thắng">
+      <img src="assets/facebook-icon.png" alt="Facebook" width="47" height="47">
+    </a>
+    <a class="dock-link dock-gmail"
+      href="mailto:maccatoanthang@gmail.com?subject=T%C6%B0%20v%E1%BA%A5n%20Macca%20To%C3%A0n%20Th%E1%BA%AFng"
+      data-contact-channel="gmail" data-tooltip="Gmail: maccatoanthang@gmail.com"
+      aria-label="Gửi email tới maccatoanthang@gmail.com" title="Gmail: maccatoanthang@gmail.com">
+      <img src="assets/gmail-icon.png" alt="Gmail" width="34" height="34">
+    </a>
+  </aside>
+
+  <footer class="simple-footer">
+    <span>© <span id="year"></span> Macca Toàn Thắng · Tinh túy từ thiên nhiên.</span>
+    <span><a href="tu-van.html">Cần hỗ trợ? Tạo yêu cầu tư vấn ↗</a></span>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript">Vui lòng bật JavaScript để sử dụng giỏ hàng và biểu mẫu.</p>
+  </noscript>
+</body>
+
+</html>

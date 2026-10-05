@@ -1,8 +1,19 @@
-'use strict';
+﻿'use strict';
 (() => {
   const $ = selector => document.querySelector(selector);
   const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase();
+
+  // Toast dùng chung element #admin-toast từ admin.js
+  let inboxToastTimer;
+  function toast(message) {
+    const el = $('#admin-toast');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add('visible');
+    clearTimeout(inboxToastTimer);
+    inboxToastTimer = setTimeout(() => el.classList.remove('visible'), 4000);
+  }
   
   // CHỈ CÓ TƯ VẤN VÀ LỜI NHẮN
   const types = { consult: 'Tư vấn', contact: 'Lời nhắn / Liên hệ' };
@@ -154,35 +165,37 @@
     if (!rows) return;
 
     if (filtered.length === 0) {
-      rows.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 36px 20px; color: var(--muted); font-size: 13.5px;">Không có yêu cầu nào phù hợp bộ lọc.</td></tr>';
+      rows.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 36px 20px; color: var(--muted); font-size: 13.5px;">Không có yêu cầu nào phù hợp bộ lọc.</td></tr>';
       return;
     }
 
     rows.innerHTML = filtered.map(r => {
-      const badgeClass = r.status === 'new' ? 'new' : r.status === 'processing' ? 'processing' : r.status === 'rejected' ? 'rejected' : 'shipped';
+      const badgeClass = r.status === 'new' ? 'new' : r.status === 'processing' ? 'processing' : r.status === 'rejected' ? 'rejected' : 'completed';
       const typeLabel = types[r.type] || r.type || 'Tư vấn';
       const custName = escape(r.customer?.name || 'Khách vãng lai');
       const custPhone = escape(r.customer?.phone || '');
       const custEmail = escape(r.customer?.email || '');
       const topicText = escape(r.topic || (r.type === 'consult' ? 'Yêu cầu tư vấn' : 'Lời nhắn khách hàng'));
-      const msgSnippet = escape((r.message || '').slice(0, 65) + ((r.message || '').length > 65 ? '…' : ''));
+      const msgSnippet = escape((r.message || '').slice(0, 75) + ((r.message || '').length > 75 ? '…' : ''));
 
       return `
         <tr data-id="${escape(r.id)}">
-          <td><strong style="color: var(--green); font-weight: 600;">${escape(r.id)}</strong></td>
-          <td style="font-size: 12.5px; color: var(--muted);">${formatTime(r.createdAt)}</td>
+          <td>
+            <strong style="color: var(--green); font-weight: 650; display: block;">${escape(r.id)}</strong>
+            <small style="font-size: 11.5px; color: var(--muted); display: block; margin-top: 3px;">${formatTime(r.createdAt)}</small>
+          </td>
           <td><span class="badge" style="background: #eef3ec; color: #2e5239; font-weight: 600;">${typeLabel}</span></td>
           <td>
             <strong>${custName}</strong>
-            <small style="display: block; color: var(--muted);">${custPhone}${custEmail ? ' · ' + custEmail : ''}</small>
+            <small style="display: block; color: var(--muted); margin-top: 2px;">${custPhone}${custEmail ? ' · ' + custEmail : ''}</small>
           </td>
-          <td class="inbox-message">
-            <strong>${topicText}</strong>
-            <small style="display: block; color: var(--muted);">${msgSnippet || 'Không có ghi chú thêm'}</small>
+          <td class="inbox-message" style="white-space: normal; min-width: 180px; max-width: 300px; word-break: break-word;">
+            <strong style="display: block; margin-bottom: 2px;">${topicText}</strong>
+            <small style="display: block; color: var(--muted); line-height: 1.45;">${msgSnippet || 'Không có ghi chú thêm'}</small>
           </td>
           <td><span class="badge ${badgeClass}">${statuses[r.status] || r.status}</span></td>
-          <td style="text-align: right;">
-            <button class="button button-outline inbox-action" data-action="detail" data-id="${escape(r.id)}" style="padding: 6px 12px; font-size: 12px; font-weight: 600;">Xem chi tiết</button>
+          <td style="text-align: center;">
+            <button type="button" class="button secondary inbox-action" data-action="detail" data-id="${escape(r.id)}" style="padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 0;">Xem chi tiết</button>
           </td>
         </tr>
       `;
@@ -194,13 +207,48 @@
     }
   }
 
-  function refresh() {
+  async function refresh(showFeedback = false) {
     window.refreshMaccaInbox = refresh;
+    if (window.MaccaApi?.request) {
+      const session = window.MaccaApi.getSession();
+      if (session?.accessToken || session?.token) {
+        try {
+          const res = await window.MaccaApi.request('/api/admin/requests?limit=100', { auth: true });
+          const items = Array.isArray(res?.items) ? res.items : (Array.isArray(res) ? res : null);
+          if (items && items.length > 0) {
+            requests = items.map(r => ({
+              id: r.id,
+              type: typeof r.type === 'string' ? r.type.toLowerCase() : 'consult',
+              topic: r.topic || '',
+              status: typeof r.status === 'string' ? r.status.toLowerCase() : 'new',
+              revision: r.revision || 0,
+              createdAt: r.createdAt || new Date().toISOString(),
+              customer: {
+                name: r.user?.name || r.customer?.name || 'Khách hàng',
+                phone: r.user?.phone || r.customer?.phone || '',
+                email: r.user?.email || r.customer?.email || ''
+              },
+              details: r.details || {},
+              message: r.message || '',
+              adminReply: r.adminReply || ''
+            }));
+            saveLocalRequests(requests);
+            render();
+            if (showFeedback) toast('Da cap nhat: ' + requests.length + ' yeu cau.');
+            return;
+          }
+        } catch (err) {
+          console.warn('Backend chưa sẵn sàng hoặc lỗi khi lấy danh sách yêu cầu, dùng dữ liệu lưu trữ cục bộ:', err.message);
+          if (showFeedback) toast('Loi ket noi may chu. Dang dung du lieu da luu.');
+        }
+      }
+    }
     requests = getLocalRequests();
     render();
+    if (showFeedback) toast('Da tai ' + requests.length + ' yeu cau tu bo nho.');
   }
 
-    let currentDetailId = '';
+  let currentDetailId = '';
 
   function openDetail(id) {
     const r = requests.find(item => item.id === id);
@@ -261,7 +309,7 @@
     const workspace = $('#inbox-workspace');
     if (workspace) workspace.removeAttribute('hidden');
 
-    $('#inbox-refresh')?.addEventListener('click', refresh);
+    $('#inbox-refresh')?.addEventListener('click', () => refresh(true));
     $('#inbox-search')?.addEventListener('input', render);
     $('#inbox-type')?.addEventListener('change', render);
     $('#inbox-status')?.addEventListener('change', render);
@@ -275,17 +323,32 @@
       if (id) openDetail(id);
     });
 
-    $('#inbox-status-form')?.addEventListener('submit', event => {
+    $('#inbox-status-form')?.addEventListener('submit', async event => {
       event.preventDefault();
       const form = event.target;
       const id = form.elements.namedItem('id')?.value || currentDetailId;
       const nextStatus = form.elements.namedItem('status')?.value;
       const target = requests.find(item => item.id === id);
       if (target && nextStatus) {
+        let savedToServer = false;
+        if (window.MaccaApi?.request && (window.MaccaApi.getSession()?.accessToken || window.MaccaApi.getSession()?.token)) {
+          try {
+            const res = await window.MaccaApi.request('/api/admin/requests/' + encodeURIComponent(id), {
+              method: 'PATCH',
+              body: { status: nextStatus, revision: target.revision || 0 },
+              auth: true
+            });
+            if (res?.revision !== undefined) target.revision = res.revision;
+            savedToServer = true;
+          } catch (err) {
+            console.warn('Backend chưa sẵn sàng khi cập nhật trạng thái yêu cầu, lưu cục bộ:', err.message);
+          }
+        }
+        const statusLabel = { new: 'Mới nhận', processing: 'Đang xử lý', completed: 'Đã xử lý', rejected: 'Đã từ chối' }[nextStatus] || nextStatus;
         target.status = nextStatus;
         saveLocalRequests(requests);
         render();
-      }
+        toast('Da cap nhat trang thai: ' + statusLabel);      }
       const dialog = $('#inbox-detail-dialog');
       if (dialog) {
         if (typeof dialog.close === 'function') dialog.close();
@@ -310,3 +373,6 @@
     setup();
   }
 })();
+
+
+

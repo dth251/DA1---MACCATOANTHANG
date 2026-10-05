@@ -11,13 +11,16 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="assets/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/favicon.png">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/catalog.css">
-    <script src="js/store.js" defer></script>
-    <script src="js/journal-data.js" defer></script>
-    <script src="js/app.js" defer></script>
-    <link rel="stylesheet" href="css/owner-contact.css">
-    <script src="js/owner-contact.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css?v=20261004d">
+    <link rel="stylesheet" href="css/auth.css?v=20261004d">
+    <link rel="stylesheet" href="css/catalog.css?v=20261004d">
+    <script src="js/api-client.js?v=20261004d" defer></script>
+    <script src="js/auth.js?v=20261004d" defer></script>
+    <script src="js/store.js?v=20261004d" defer></script>
+    <script src="js/journal-data.js?v=20261004d" defer></script>
+    <script src="js/app.js?v=20261004d" defer></script>
+    <link rel="stylesheet" href="css/owner-contact.css?v=20261004d">
+    <script src="js/owner-contact.js?v=20261004d" defer></script>
 </head>
 
 <body class="catalog-page" data-page="catalog"><a class="skip-link" href="#main">Đến nội dung chính</a>
@@ -25,11 +28,15 @@
                 class="brand-logo" src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64"></a>
         <nav aria-label="Điều hướng chính"><a href="index.html">Trang chủ</a><a href="san-pham.html" class="active"
                 aria-current="page">Sản phẩm</a><a href="cau-chuyen.html">Câu chuyện của chúng tôi</a><a
-                href="goc-macca.html">Góc macca</a><a href="lien-he.html">Liên hệ</a></nav><a class="cart-button"
-            href="gio-hang.html"><svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 7h14l1 14H4L5 7Z" />
-                <path d="M8 8V6a4 4 0 0 1 8 0v2" />
-            </svg><span>Giỏ hàng</span><b id="cart-count">0</b></a>
+                href="goc-macca.html">Góc macca</a><a href="lien-he.html">Liên hệ</a></nav>
+        <div class="header-actions">
+            <a class="cart-button" href="gio-hang.html"><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 7h14l1 14H4L5 7Z" />
+                    <path d="M8 8V6a4 4 0 0 1 8 0v2" />
+                </svg><span>Giỏ hàng</span><b id="cart-count">0</b></a>
+            <span class="divider"></span>
+            <div class="header-auth" aria-label="Tài khoản"></div>
+        </div>
     </header>
     <main id="main" class="catalog-wrap">
         <div class="catalog-breadcrumbs"><a href="index.html">Trang chủ</a><span aria-hidden="true">/</span><span>Sản
@@ -82,12 +89,12 @@
         </section>
     </main>
     <aside class="owner-contact-dock" aria-label="Kênh liên hệ Macca Toàn Thắng"><a class="dock-link dock-phone"
-            href="tel:0988245476" data-contact-channel="phone" data-tooltip="Hotline: 0988 245 476"
-            aria-label="Gọi điện hotline 0988 245 476" title="Hotline: 0988 245 476"><img src="assets/phone-icon.png"
+            href="tel:0975895024" data-contact-channel="phone" data-tooltip="Hotline: 0975.895.024"
+            aria-label="Gọi điện hotline 0975.895.024" title="Hotline: 0975.895.024"><img src="assets/phone-icon.png"
                 alt="Điện thoại" width="47" height="47"></a><a class="dock-link dock-zalo"
-            href="https://zalo.me/0988245476" target="_blank" rel="noopener noreferrer" data-contact-channel="zalo"
-            data-tooltip="Chat Zalo: 0988 245 476" aria-label="Nhắn tin qua Zalo Macca Toàn Thắng"
-            title="Chat Zalo: 0988 245 476"><img src="assets/zalo-icon.png" alt="Zalo" width="36" height="36"></a><a
+            href="https://zalo.me/0975895024" target="_blank" rel="noopener noreferrer" data-contact-channel="zalo"
+            data-tooltip="Chat Zalo: 0975.895.024" aria-label="Nhắn tin qua Zalo Macca Toàn Thắng"
+            title="Chat Zalo: 0975.895.024"><img src="assets/zalo-icon.png" alt="Zalo" width="36" height="36"></a><a
             class="dock-link dock-facebook" href="https://facebook.com/maccatoanthang" target="_blank"
             rel="noopener noreferrer" data-contact-channel="facebook" data-tooltip="Facebook: Macca Toàn Thắng"
             aria-label="Truy cập Fanpage Facebook Macca Toàn Thắng" title="Facebook: Macca Toàn Thắng"><img

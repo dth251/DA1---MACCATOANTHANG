@@ -1,1 +1,400 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#243f30"><meta name="description" content="Thanh toán — Macca Toàn Thắng"><title>Thanh toán | Macca Toàn Thắng</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon.png" type="image/png"><link rel="apple-touch-icon" href="assets/favicon.png"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/commerce.css"><script src="js/store.js" defer></script><script src="js/request-api.js" defer></script><script src="js/commerce.js" defer></script><link rel="stylesheet" href="css/owner-contact.css"><script src="js/owner-contact.js" defer></script></head><body class="commerce-page" data-page="checkout"><a class="skip-link" href="#main">Đến nội dung chính</a><header class="header"><a class="brand" href="index.html" aria-label="Macca Toàn Thắng — Trang chủ"><img class="brand-logo" src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64"></a><nav aria-label="Điều hướng chính"><a href="index.html">Trang chủ</a><a href="san-pham.html">Sản phẩm</a><a href="cau-chuyen.html">Câu chuyện của chúng tôi</a><a href="goc-macca.html">Góc macca</a><a href="lien-he.html">Liên hệ</a></nav><a class="cart-button" href="gio-hang.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg><span>Giỏ hàng</span><b id="cart-count">0</b></a></header><p id="storage-warning" class="storage-warning" role="alert" hidden>Trình duyệt đang chặn lưu dữ liệu. Hãy cho phép lưu dữ liệu trang web để giữ giỏ hàng khi chuyển trang.</p><main id="main" class="page-shell"><div class="breadcrumbs" aria-label="Đường dẫn"><a href="index.html">Trang chủ</a><span aria-hidden="true">/</span><span>Thanh toán</span></div><div class="page-intro" id="checkout-intro"><div><p class="eyebrow">HOÀN THIỆN LỰA CHỌN CỦA BẠN</p><h1>Thanh toán.</h1><p>Thêm thông tin nhận hàng và kiểm tra lại đơn trước khi hoàn tất.</p></div><ol class="stepper" aria-label="Tiến trình mua hàng"><li class="" ><b>1</b><a href="gio-hang.html">Giỏ hàng</a></li><li class="current" aria-current="step"><b>2</b>Thanh toán</li><li><b>3</b>Hoàn tất</li></ol></div><div class="demo-notice" id="checkout-notice">Yêu cầu đặt hàng sẽ được gửi đến cửa hàng để xác nhận. Bạn chưa phải thanh toán trực tuyến.</div><div id="checkout-empty" class="panel empty-state empty-cart" hidden><h2>Bạn chưa có sản phẩm để thanh toán.</h2><p>Thêm macca vào giỏ hàng để tiếp tục.</p><a href="san-pham.html" class="button">Chọn sản phẩm ↗</a></div><form id="checkout-form"><div class="commerce-grid"><div><section class="panel"><h2><span class="section-no">01</span>Thông tin nhận hàng</h2><div class="field-grid"><label class="field">Họ và tên <span class="required">*</span><input name="name" required maxlength="100" autocomplete="shipping name" placeholder="Họ tên người nhận"></label><label class="field">Số điện thoại <span class="required">*</span><input name="phone" type="tel" required pattern="[+]?[0-9 ]{9,15}" autocomplete="shipping tel" placeholder="Ví dụ: 0901234567"></label><label class="field field-full">Email<input name="email" type="email" maxlength="150" autocomplete="shipping email" placeholder="Không bắt buộc"></label><label class="field">Tỉnh / thành phố <span class="required">*</span><input name="province" required maxlength="100" autocomplete="shipping address-level1" placeholder="Nhập tỉnh hoặc thành phố"></label><label class="field">Phường / xã <span class="required">*</span><input name="ward" required maxlength="100" autocomplete="shipping address-level2" placeholder="Nhập phường hoặc xã"></label><label class="field field-full">Địa chỉ cụ thể <span class="required">*</span><input name="address" required minlength="5" maxlength="250" autocomplete="shipping street-address" placeholder="Số nhà, tên đường, tòa nhà…"></label><label class="field field-full">Ghi chú đơn hàng<textarea name="note" maxlength="1000" rows="3" placeholder="Lời nhắn tặng quà hoặc hướng dẫn nhận hàng (không bắt buộc)"></textarea></label></div></section><section class="panel"><h2><span class="section-no">02</span>Phương thức giao hàng</h2><label class="choice"><input type="radio" name="shipping" value="standard" checked><span><strong>Giao hàng tiêu chuẩn</strong><small>Dự kiến 3–5 ngày · Thời gian minh họa</small></span><b>30.000 ₫</b></label><label class="choice"><input type="radio" name="shipping" value="express"><span><strong>Giao hàng nhanh</strong><small>Dự kiến 1–2 ngày · Thời gian minh họa</small></span><b>45.000 ₫</b></label><p class="fine-print">Phí cố định dùng cho bản mẫu. Phí và thời gian thực tế cần xác nhận theo địa chỉ nhận hàng.</p></section><section class="panel"><h2><span class="section-no">03</span>Phương thức thanh toán</h2><label class="choice"><input type="radio" name="payment" value="cod" checked><span><strong>Thanh toán khi nhận hàng (COD)</strong><small>Cửa hàng sẽ liên hệ xác nhận trước khi giao hàng.</small></span><b>COD</b></label><label class="choice unavailable"><input type="radio" name="payment" value="bank" disabled><span><strong>Chuyển khoản ngân hàng</strong><small>Chưa khả dụng — chưa có thông tin tài khoản thanh toán.</small></span></label><label class="choice unavailable"><input type="radio" name="payment" value="online" disabled><span><strong>Thẻ ngân hàng / Ví điện tử</strong><small>Chưa khả dụng — chưa kết nối cổng thanh toán.</small></span></label></section><a class="text-link" href="gio-hang.html">← Quay lại giỏ hàng</a></div><aside class="panel summary-panel"><div class="order-edit"><h2>Đơn hàng của bạn</h2><a href="gio-hang.html">Chỉnh sửa</a></div><div id="checkout-items"></div><div id="checkout-summary" aria-live="polite"></div><label class="checkbox-line"><input name="acknowledge" type="checkbox" required><span>Tôi đã kiểm tra thông tin và đồng ý gửi yêu cầu đặt hàng đến cửa hàng.</span></label><p id="checkout-error" class="field-error" role="alert"></p><button class="button" type="submit" id="place-order">Gửi yêu cầu đặt hàng <span>↗</span></button><p class="fine-print">Không yêu cầu thông tin thẻ. Thông tin nhận hàng được gửi đến cửa hàng để xử lý đơn.</p></aside></div></form><section id="order-success" class="success-panel" hidden tabindex="-1"><div class="success-icon" aria-hidden="true">✓</div><p class="eyebrow">ĐÃ GỬI YÊU CẦU ĐẶT HÀNG</p><h1>Cửa hàng đã nhận yêu cầu.</h1><p>Yêu cầu đặt hàng đã được gửi và <strong>đang chờ cửa hàng xác nhận</strong>. Chưa thanh toán.<br>Giỏ hàng được giữ lại; không cần gửi lại cùng một yêu cầu.</p><pre class="receipt" id="order-receipt"></pre><div class="success-actions"><button class="button" id="download-order">Tải thông tin đơn hàng ↓</button><a class="button button-outline" href="gio-hang.html">Về giỏ hàng</a></div></section></main><aside class="owner-contact-dock" aria-label="Kênh liên hệ Macca Toàn Thắng"><a class="dock-link dock-phone" href="tel:0988245476" data-contact-channel="phone" data-tooltip="Hotline: 0988 245 476" aria-label="Gọi điện hotline 0988 245 476" title="Hotline: 0988 245 476"><img src="assets/phone-icon.png" alt="Điện thoại" width="47" height="47"></a><a class="dock-link dock-zalo" href="https://zalo.me/0988245476" target="_blank" rel="noopener noreferrer" data-contact-channel="zalo" data-tooltip="Chat Zalo: 0988 245 476" aria-label="Nhắn tin qua Zalo Macca Toàn Thắng" title="Chat Zalo: 0988 245 476"><img src="assets/zalo-icon.png" alt="Zalo" width="36" height="36"></a><a class="dock-link dock-facebook" href="https://facebook.com/maccatoanthang" target="_blank" rel="noopener noreferrer" data-contact-channel="facebook" data-tooltip="Facebook: Macca Toàn Thắng" aria-label="Truy cập Fanpage Facebook Macca Toàn Thắng" title="Facebook: Macca Toàn Thắng"><img src="assets/facebook-icon.png" alt="Facebook" width="47" height="47"></a><a class="dock-link dock-gmail" href="mailto:maccatoanthang@gmail.com?subject=T%C6%B0%20v%E1%BA%A5n%20Macca%20To%C3%A0n%20Th%E1%BA%AFng" data-contact-channel="gmail" data-tooltip="Gmail: maccatoanthang@gmail.com" aria-label="Gửi email tới maccatoanthang@gmail.com" title="Gmail: maccatoanthang@gmail.com"><img src="assets/gmail-icon.png" alt="Gmail" width="34" height="34"></a></aside><footer class="simple-footer"><span>© <span id="year"></span> Macca Toàn Thắng · Tinh túy từ thiên nhiên.</span><span><a href="tu-van.html">Cần hỗ trợ? Tạo yêu cầu tư vấn ↗</a></span></footer><div id="toast" role="status" aria-live="polite"></div><noscript><p class="noscript">Vui lòng bật JavaScript để sử dụng giỏ hàng và biểu mẫu.</p></noscript></body></html>
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#243f30">
+  <meta name="description" content="Thanh toán — Macca Toàn Thắng">
+  <title>Thanh toán | Macca Toàn Thắng</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/styles.css?v=20261004d">
+  <link rel="stylesheet" href="css/auth.css?v=20261004d">
+  <link rel="stylesheet" href="css/commerce.css?v=20261004d">
+  <script src="js/api-client.js?v=20261004d" defer></script>
+  <script src="js/auth.js?v=20261004d" defer></script>
+  <script src="js/store.js?v=20261004d" defer></script>
+  <script src="js/request-api.js?v=20261004d" defer></script>
+  <script src="js/commerce.js?v=20261004d" defer></script>
+  <link rel="stylesheet" href="css/owner-contact.css?v=20261004d">
+  <script src="js/owner-contact.js?v=20261004d" defer></script>
+</head>
+
+<body class="commerce-page" data-page="checkout">
+  <a class="skip-link" href="#main">Đến nội dung chính</a>
+
+  <header class="header">
+    <a class="brand" href="index.html" aria-label="Macca Toàn Thắng — Trang chủ">
+      <img class="brand-logo" src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" width="260" height="64">
+    </a>
+    <nav aria-label="Điều hướng chính">
+      <a href="index.html">Trang chủ</a>
+      <a href="san-pham.html">Sản phẩm</a>
+      <a href="cau-chuyen.html">Câu chuyện của chúng tôi</a>
+      <a href="goc-macca.html">Góc macca</a>
+      <a href="lien-he.html">Liên hệ</a>
+    </nav>
+    <div class="header-actions">
+      <a class="cart-button" href="gio-hang.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 7h14l1 14H4L5 7Z" />
+          <path d="M8 8V6a4 4 0 0 1 8 0v2" />
+        </svg>
+        <span>Giỏ hàng</span>
+        <b id="cart-count">0</b>
+      </a>
+      <span class="divider"></span>
+      <div class="header-auth" aria-label="Tài khoản"></div>
+    </div>
+  </header>
+
+  <p id="storage-warning" class="storage-warning" role="alert" hidden>Trình duyệt đang chặn lưu dữ liệu. Hãy cho phép
+    lưu dữ liệu trang web để giữ giỏ hàng khi chuyển trang.</p>
+
+  <main id="main" class="page-shell">
+    <div class="breadcrumbs" aria-label="Đường dẫn">
+      <a href="index.html">Trang chủ</a>
+      <span aria-hidden="true">/</span>
+      <span>Thanh toán</span>
+    </div>
+
+    <div class="page-intro" id="checkout-intro">
+      <div>
+        <p class="eyebrow">HOÀN THIỆN LỰA CHỌN CỦA BẠN</p>
+        <h1>Thanh toán.</h1>
+        <p>Thêm thông tin nhận hàng và kiểm tra lại đơn trước khi hoàn tất.</p>
+      </div>
+      <ol class="stepper" aria-label="Tiến trình mua hàng">
+        <li><b>1</b><a href="gio-hang.html">Giỏ hàng</a></li>
+        <li class="current" aria-current="step" id="step-checkout"><b>2</b>Thanh toán</li>
+        <li id="step-complete"><b>3</b>Hoàn tất</li>
+      </ol>
+    </div>
+
+    <div class="demo-notice" id="checkout-notice">
+      Yêu cầu đặt hàng sẽ được gửi đến cửa hàng để xác nhận. Bạn chưa phải thanh toán trực tuyến.
+    </div>
+
+    <div id="checkout-empty" class="panel empty-state empty-cart" hidden>
+      <h2>Bạn chưa có sản phẩm để thanh toán.</h2>
+      <p>Thêm macca vào giỏ hàng để tiếp tục.</p>
+      <a href="san-pham.html" class="button">Chọn sản phẩm ↗</a>
+    </div>
+
+    <form id="checkout-form">
+      <div class="commerce-grid">
+        <div>
+          <section class="panel">
+            <h2><span class="section-no">01</span>Thông tin nhận hàng</h2>
+            <div class="field-grid">
+              <label class="field">
+                Họ và tên <span class="required">*</span>
+                <input name="name" required maxlength="100" autocomplete="shipping name"
+                  placeholder="Họ tên người nhận">
+              </label>
+              <label class="field">
+                Số điện thoại <span class="required">*</span>
+                <input name="phone" type="tel" required pattern="[+]?[0-9 ]{9,15}" autocomplete="shipping tel"
+                  placeholder="Ví dụ: 0901234567">
+              </label>
+              <label class="field field-full">
+                Email
+                <input name="email" type="email" maxlength="150" autocomplete="shipping email"
+                  placeholder="Không bắt buộc">
+              </label>
+              <label class="field">
+                Tỉnh / thành phố <span class="required">*</span>
+                <input name="province" required maxlength="100" autocomplete="shipping address-level1"
+                  placeholder="Nhập tỉnh hoặc thành phố">
+              </label>
+              <label class="field">
+                Phường / xã <span class="required">*</span>
+                <input name="ward" required maxlength="100" autocomplete="shipping address-level2"
+                  placeholder="Nhập phường hoặc xã">
+              </label>
+              <label class="field field-full">
+                Địa chỉ cụ thể <span class="required">*</span>
+                <input name="address" required minlength="5" maxlength="250" autocomplete="shipping street-address"
+                  placeholder="Số nhà, tên đường, tòa nhà…">
+              </label>
+              <label class="field field-full">
+                Ghi chú đơn hàng
+                <textarea name="note" maxlength="1000" rows="3"
+                  placeholder="Lời nhắn tặng quà hoặc hướng dẫn nhận hàng (không bắt buộc)"></textarea>
+              </label>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2><span class="section-no">02</span>Phương thức giao hàng</h2>
+            <label class="choice">
+              <input type="radio" name="shipping" value="standard" checked>
+              <span>
+                <strong>Giao hàng tiêu chuẩn</strong>
+                <small>Dự kiến 3–5 ngày · Thời gian minh họa</small>
+              </span>
+              <b>30.000 ₫</b>
+            </label>
+            <label class="choice">
+              <input type="radio" name="shipping" value="express">
+              <span>
+                <strong>Giao hàng nhanh</strong>
+                <small>Dự kiến 1–2 ngày · Thời gian minh họa</small>
+              </span>
+              <b>45.000 ₫</b>
+            </label>
+            <p class="fine-print">Phí cố định dùng cho bản mẫu. Phí và thời gian thực tế cần xác nhận theo địa chỉ nhận
+              hàng.</p>
+          </section>
+
+          <section class="panel">
+            <h2><span class="section-no">03</span>Phương thức thanh toán</h2>
+            <label class="choice">
+              <input type="radio" name="payment" value="cod" checked>
+              <span>
+                <strong>Thanh toán khi nhận hàng (COD)</strong>
+                <small>Cửa hàng sẽ liên hệ xác nhận trước khi giao hàng.</small>
+              </span>
+              <b>COD</b>
+            </label>
+            <label class="choice unavailable">
+              <input type="radio" name="payment" value="bank" disabled>
+              <span>
+                <strong>Chuyển khoản ngân hàng</strong>
+                <small>Chưa khả dụng — chưa có thông tin tài khoản thanh toán.</small>
+              </span>
+            </label>
+            <label class="choice unavailable">
+              <input type="radio" name="payment" value="online" disabled>
+              <span>
+                <strong>Thẻ ngân hàng / Ví điện tử</strong>
+                <small>Chưa khả dụng — chưa kết nối cổng thanh toán.</small>
+              </span>
+            </label>
+          </section>
+
+          <a class="text-link" href="gio-hang.html">← Quay lại giỏ hàng</a>
+        </div>
+
+        <aside class="panel summary-panel">
+          <div class="order-edit">
+            <h2>Đơn hàng của bạn</h2>
+            <a href="gio-hang.html">Chỉnh sửa</a>
+          </div>
+          <div id="checkout-items"></div>
+          <div id="checkout-summary" aria-live="polite"></div>
+          <input name="acknowledge" type="hidden" value="on">
+          <p id="checkout-error" class="field-error" role="alert"></p>
+          <button class="button" type="submit" id="place-order">Tiến hành thanh toán</button>
+          <p class="fine-print">Không yêu cầu thông tin thẻ. Thanh toán tiền mặt trực tiếp khi nhận hàng.</p>
+        </aside>
+      </div>
+    </form>
+
+    <!-- SECTION BILL ĐƠN HÀNG THÀNH CÔNG -->
+    <section id="order-success" class="order-success-section" hidden tabindex="-1">
+      <div class="success-badge-card">
+        <div class="success-icon-wrapper" aria-hidden="true">
+          <svg class="success-checkmark" viewBox="0 0 52 52" width="68" height="68">
+            <circle class="checkmark-circle" cx="26" cy="26" r="24" />
+            <path class="checkmark-check" d="M14 27l8 8 16-16" />
+          </svg>
+        </div>
+        <p class="eyebrow success-eyebrow">ĐẶT HÀNG THÀNH CÔNG</p>
+        <h1 class="success-title">Cảm ơn bạn đã đặt hàng!</h1>
+        <p class="success-desc">Đơn hàng của quý khách đã được tiếp nhận thành công vào hệ thống. Đội ngũ <strong>Macca
+            Toàn Thắng</strong> sẽ liên hệ sớm nhất qua số điện thoại để xác nhận đơn và tiến hành giao hàng nhanh
+          chóng!</p>
+      </div>
+
+      <div class="invoice-card" id="invoice-card">
+        <div class="invoice-header">
+          <div class="invoice-brand">
+            <img src="assets/logo-horizontal.png" alt="Macca Toàn Thắng" class="invoice-logo" width="200" height="49">
+            <p class="invoice-company">CÔNG TY TNHH MACCA TOÀN THẮNG</p>
+            <p class="invoice-contact-line">· Hotline: <strong>0975.895.024</strong> · Website: maccatoanthang.com</p>
+          </div>
+          <div class="invoice-title-block">
+            <h2 class="invoice-heading">PHIẾU THANH TOÁN ĐƠN HÀNG</h2>
+            <span class="invoice-status-tag" id="invoice-status">Chờ xác nhận (COD)</span>
+          </div>
+        </div>
+
+        <div class="invoice-meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">MÃ ĐƠN HÀNG</span>
+            <div class="meta-code-wrap">
+              <strong class="meta-value order-code" id="inv-order-id">---</strong>
+              <button type="button" class="btn-copy-code" id="btn-copy-order-id" title="Sao chép mã đơn hàng">Sao
+                chép</button>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">NGÀY ĐẶT HÀNG</span>
+            <span class="meta-value" id="inv-created-at">---</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">NGƯỜI NHẬN</span>
+            <strong class="meta-value" id="inv-customer-name">---</strong>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">SỐ ĐIỆN THOẠI</span>
+            <span class="meta-value" id="inv-customer-phone">---</span>
+          </div>
+          <div class="meta-item meta-item-full">
+            <span class="meta-label">ĐỊA CHỈ NHẬN HÀNG</span>
+            <span class="meta-value" id="inv-customer-address">---</span>
+          </div>
+          <div class="meta-item meta-item-full" id="inv-note-row">
+            <span class="meta-label">GHI CHÚ ĐƠN HÀNG</span>
+            <span class="meta-value" id="inv-customer-note">Không có</span>
+          </div>
+        </div>
+
+        <div class="invoice-table-wrapper">
+          <table class="invoice-table">
+            <thead>
+              <tr>
+                <th class="th-stt">STT</th>
+                <th class="th-product">Sản phẩm</th>
+                <th class="th-unit-price">Đơn giá</th>
+                <th class="th-quantity">Số lượng</th>
+                <th class="th-total">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody id="inv-items-body"></tbody>
+          </table>
+        </div>
+
+        <div class="invoice-summary-block">
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span>Tiền hàng (Tạm tính):</span>
+              <strong id="inv-subtotal">0 ₫</strong>
+            </div>
+            <div class="summary-row">
+              <span>Phí vận chuyển (<span id="inv-shipping-method">Tiêu chuẩn</span>):</span>
+              <strong id="inv-shipping-fee">30.000 ₫</strong>
+            </div>
+            <div class="summary-row summary-grand-total">
+              <span>TỔNG CỘNG THANH TOÁN (COD):</span>
+              <strong class="grand-total-amount" id="inv-grand-total">0 ₫</strong>
+            </div>
+            <div class="summary-payment-method">
+              <span>Phương thức thanh toán:</span>
+              <strong>Thanh toán tiền mặt khi nhận hàng (COD)</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-footer-note">
+          <p><em>Quý khách được đồng kiểm (kiểm tra hàng) trước khi thanh toán. Mọi hỗ trợ đơn hàng xin liên hệ Hotline:
+              <strong data-contact="phone">0975.895.024</strong>.</em></p>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <button class="button button-print" id="print-order" type="button">In phiếu thanh toán</button>
+        <button class="button button-outline" id="download-order" type="button">Tải phiếu (.txt)</button>
+        <a class="button button-outline" href="san-pham.html">Tiếp tục mua hàng</a>
+        <a class="button button-subtle" href="index.html">Về trang chủ</a>
+      </div>
+    </section>
+
+    <!-- HỘP THOẠI XÁC NHẬN ĐẶT ĐƠN HÀNG (CONFIRM MODAL) -->
+    <div id="order-confirm-modal" class="confirm-modal-overlay" hidden role="dialog" aria-modal="true"
+      aria-labelledby="modal-confirm-title">
+      <div class="confirm-modal-card">
+        <div class="confirm-modal-header">
+          <div>
+            <h3 class="confirm-modal-title" id="modal-confirm-title">Xác nhận đặt đơn hàng</h3>
+            <p class="confirm-modal-subtitle">Vui lòng kiểm tra lại thông tin trước khi hoàn tất đặt hàng</p>
+          </div>
+          <button type="button" class="confirm-modal-close" id="btn-modal-close" aria-label="Đóng">&times;</button>
+        </div>
+
+        <div class="confirm-modal-body">
+          <div class="confirm-summary-box">
+            <div class="confirm-row">
+              <span class="confirm-label">Người nhận:</span>
+              <strong class="confirm-val" id="modal-cust-name">---</strong>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Số điện thoại:</span>
+              <strong class="confirm-val" id="modal-cust-phone">---</strong>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Địa chỉ nhận hàng:</span>
+              <span class="confirm-val" id="modal-cust-address">---</span>
+            </div>
+            <div class="confirm-row" id="modal-note-row">
+              <span class="confirm-label">Ghi chú đơn hàng:</span>
+              <span class="confirm-val" id="modal-cust-note">Không có</span>
+            </div>
+            <div class="confirm-divider"></div>
+            <div class="confirm-row">
+              <span class="confirm-label">Sản phẩm đặt:</span>
+              <span class="confirm-val" id="modal-items-summary">---</span>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Phương thức vận chuyển:</span>
+              <span class="confirm-val" id="modal-shipping-method">Tiêu chuẩn (30.000 ₫)</span>
+            </div>
+            <div class="confirm-row">
+              <span class="confirm-label">Phương thức thanh toán:</span>
+              <span class="confirm-val">Thanh toán khi nhận hàng (COD)</span>
+            </div>
+            <div class="confirm-row confirm-total-row">
+              <span class="confirm-label">TỔNG TIỀN THANH TOÁN (COD):</span>
+              <strong class="confirm-total-amount" id="modal-grand-total">0 ₫</strong>
+            </div>
+          </div>
+          <p class="confirm-tip"><em>Quý khách sẽ thanh toán tiền mặt trực tiếp cho nhân viên giao hàng sau khi nhận và
+              đồng kiểm sản phẩm.</em></p>
+        </div>
+
+        <div class="confirm-modal-footer">
+          <button type="button" class="button button-outline" id="btn-modal-cancel">Kiểm tra lại</button>
+          <button type="button" class="button button-confirm" id="btn-modal-accept">Đồng ý đặt hàng</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="owner-contact-dock" aria-label="Kênh liên hệ Macca Toàn Thắng">
+    <a class="dock-link dock-phone" href="tel:0975895024" data-contact-channel="phone"
+      data-tooltip="Hotline: 0975.895.024" aria-label="Gọi điện hotline 0975.895.024" title="Hotline: 0975.895.024">
+      <img src="assets/phone-icon.png" alt="Điện thoại" width="47" height="47">
+    </a>
+    <a class="dock-link dock-zalo" href="https://zalo.me/0975895024" target="_blank" rel="noopener noreferrer"
+      data-contact-channel="zalo" data-tooltip="Chat Zalo: 0975.895.024" aria-label="Nhắn tin qua Zalo Macca Toàn Thắng"
+      title="Chat Zalo: 0975.895.024">
+      <img src="assets/zalo-icon.png" alt="Zalo" width="36" height="36">
+    </a>
+    <a class="dock-link dock-facebook" href="https://facebook.com/maccatoanthang" target="_blank"
+      rel="noopener noreferrer" data-contact-channel="facebook" data-tooltip="Facebook: Macca Toàn Thắng"
+      aria-label="Truy cập Fanpage Facebook Macca Toàn Thắng" title="Facebook: Macca Toàn Thắng">
+      <img src="assets/facebook-icon.png" alt="Facebook" width="47" height="47">
+    </a>
+    <a class="dock-link dock-gmail"
+      href="mailto:maccatoanthang@gmail.com?subject=T%C6%B0%20v%E1%BA%A5n%20Macca%20To%C3%A0n%20Th%E1%BA%AFng"
+      data-contact-channel="gmail" data-tooltip="Gmail: maccatoanthang@gmail.com"
+      aria-label="Gửi email tới maccatoanthang@gmail.com" title="Gmail: maccatoanthang@gmail.com">
+      <img src="assets/gmail-icon.png" alt="Gmail" width="34" height="34">
+    </a>
+  </aside>
+
+  <footer class="simple-footer">
+    <span>© <span id="year"></span> Macca Toàn Thắng · Tinh túy từ thiên nhiên.</span>
+    <span><a href="tu-van.html">Cần hỗ trợ? Tạo yêu cầu tư vấn ↗</a></span>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript>
+    <p class="noscript">Vui lòng bật JavaScript để sử dụng giỏ hàng và biểu mẫu.</p>
+  </noscript>
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+# ── Environment Variables (KHÔNG commit) ─────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Nginx SSL Certificates ────────────────────────────────────
+nginx/certs/
+
+# ── OS & Editor ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/settings.json

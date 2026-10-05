@@ -287,20 +287,20 @@ crontab -e
 ```
 GIAI ĐOẠN 1 — Chuẩn bị (trên Server & GitHub)
 ───────────────────────────────────────────────
-□ Mua VPS Cheap 4, Ubuntu 22.04 LTS, mở port 80/443/22
-□ Trỏ DNS: maccatoanthang.com → IP server
-□ SSH vào server, cài Docker + Docker Compose
-□ Cấp SSL Let's Encrypt
-□ Tạo /opt/maccatoanthang/.env với giá trị thật
-□ Tạo SSH key pair cho CI/CD
-□ Thêm 3 GitHub Secrets: SERVER_IP, SERVER_USER, SSH_PRIVATE_KEY
+[x] Mua VPS Cheap 4, Ubuntu 22.04 LTS, mở port 80/443/22
+[x] Trỏ DNS: maccatoanthang.com → IP server
+[x] SSH vào server, cài Docker + Docker Compose
+[x] Cấp SSL Let's Encrypt
+[x] Tạo /opt/maccatoanthang/.env với giá trị thật
+[x] Tạo SSH key pair cho CI/CD
+[x] Thêm 3 GitHub Secrets: SERVER_IP, SERVER_USER, SSH_PRIVATE_KEY
 
 GIAI ĐOẠN 2 — Deploy lần đầu
 ───────────────────────────────
-□ git push origin main
-□ Theo dõi GitHub Actions tab
-□ Kiểm tra https://maccatoanthang.com
-□ Đổi SEED_ENABLED=false sau khi ổn định
+[x] git push origin main
+[x] Theo dõi GitHub Actions tab
+[x] Kiểm tra https://maccatoanthang.com (ĐÃ HOÀN TẤT & HOẠT ĐỘNG)
+[ ] Đổi SEED_ENABLED=false sau khi ổn định
 
 GIAI ĐOẠN 3 — Vận hành
 ────────────────────────

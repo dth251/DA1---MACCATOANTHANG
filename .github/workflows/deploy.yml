@@ -5,7 +5,7 @@ name: 🚀 Deploy — maccatoanthang.com
 # ──────────────────────────────────────────────────────────────
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   workflow_dispatch:
     inputs:
       reason:
@@ -68,7 +68,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 6. Tạo metadata (tags, labels) cho Docker image
+      # 7. Tạo metadata (tags, labels) cho Docker image
       - name: 🏷️ Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -76,7 +76,7 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=sha,prefix=sha-,format=short
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest
 
       # 7. Build Docker image và push lên ghcr.io
       #    (cache layer để lần sau build nhanh hơn)

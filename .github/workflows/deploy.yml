@@ -105,73 +105,51 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      # 2. Sync thư mục frontend lên server
-      - name: 📂 Sync frontend
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend/"
-          target: "/opt/maccatoanthang/"
+      # 2. Cài đặt SSH Key
+      - name: 🔑 Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      # 3. Sync nginx config lên server
-      - name: 📂 Sync nginx config
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "nginx/"
-          target: "/opt/maccatoanthang/"
+      # 3. Sync file tĩnh và cấu hình lên server
+      - name: 📂 Sync files to server
+        run: |
+          scp -r frontend nginx docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/opt/maccatoanthang/
 
-      # 4. Sync docker-compose.yml lên server
-      - name: 📂 Sync docker-compose.yml
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml"
-          target: "/opt/maccatoanthang/"
-
-      # 5. SSH vào server và deploy
-      - name: 🚀 Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            set -e   # Dừng ngay nếu có lỗi
-
+      # 4. SSH vào server và khởi động dịch vụ
+      - name: 🚀 Deploy on server
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "bash -s" << 'EOF'
+            set -e
             cd /opt/maccatoanthang
 
-            # Đăng nhập GitHub Container Registry trên server
-            echo "${{ secrets.GITHUB_TOKEN }}" | \
-              docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            # Đăng nhập GitHub Container Registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Export biến cho docker-compose (chuyển chữ thường vì Docker yêu cầu lowercase)
+            # Export repo name lowercase
             export GITHUB_REPOSITORY=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
 
-            # Pull image mới nhất từ ghcr.io
+            # Pull image backend mới nhất
             docker compose pull backend
 
-            # Khởi động / cập nhật các service (db, backend, nginx)
+            # Khởi động / cập nhật toàn bộ container (db, backend, nginx)
             docker compose up -d --remove-orphans
 
-            # Reload nginx config
+            # Reload nginx nếu cần
             docker compose exec -T nginx nginx -s reload || true
 
-            # Dọn dẹp image cũ (giải phóng ổ đĩa)
+            # Dọn dẹp image cũ
             docker image prune -f
 
             echo ""
             echo "✅ Deploy thành công lúc $(date '+%H:%M:%S %d/%m/%Y')"
             echo "📦 Image: ghcr.io/${{ github.repository }}:latest"
             echo "🌐 URL: https://maccatoanthang.com"
+          EOF
 
-      # 6. Health check — Gọi API để xác nhận hệ thống hoạt động
+      # 5. Health check — Xác nhận website phản hồi 200 OK
       - name: 🏥 Health check
         run: |
           echo "Kiểm tra hệ thống hoạt động (tối đa 60 giây)..."

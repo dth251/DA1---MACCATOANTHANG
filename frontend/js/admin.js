@@ -817,6 +817,7 @@
   });
 
   (async () => {
+    state = api.reload();
     await loadAdminArticles();
     render();
     navigate();

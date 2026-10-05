@@ -65,6 +65,9 @@ window.MaccaAdminAuth = (() => {
         if (window.MaccaAdmin?.syncBackend) {
           window.MaccaAdmin.syncBackend();
         }
+        if (window.refreshMaccaInbox) {
+          window.refreshMaccaInbox();
+        }
         return;
       } catch (err) {
         console.warn('Phiên đăng nhập admin hết hạn hoặc máy chủ chưa phản hồi:', err.message);
@@ -130,6 +133,9 @@ window.MaccaAdminAuth = (() => {
           change(userObj, '', true);
           if (window.MaccaAdmin?.syncBackend) {
             window.MaccaAdmin.syncBackend();
+          }
+          if (window.refreshMaccaInbox) {
+            window.refreshMaccaInbox();
           }
           return;
         } catch (err) {

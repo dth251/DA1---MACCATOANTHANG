@@ -22,19 +22,21 @@ window.MaccaAdmin = (() => {
   let loadError = '';
   function reload() {
     try {
-      const raw = localStorage.getItem(key);
+      let raw = localStorage.getItem(key);
       let data;
       if (raw === null || /[\uFFFD]|Ã[¡\s]|áº|á»|Ä‘/.test(raw)) {
         data = initial();
-        try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+        raw = JSON.stringify(data);
+        try { localStorage.setItem(key, raw); } catch {}
       } else {
         data = JSON.parse(raw);
-        // Tự động xóa các đơn hàng mẫu (DH-2609-*) nếu còn lưu trong bộ nhớ trình duyệt
+        // Tự động xóa các đơn hàng mẫu (DH-2609-*, DH-MOCK-*) nếu còn lưu trong bộ nhớ trình duyệt
         if (data && Array.isArray(data.orders)) {
-          const cleaned = data.orders.filter(o => !o.id || !o.id.startsWith('DH-2609-'));
+          const cleaned = data.orders.filter(o => !o.id || (!o.id.startsWith('DH-2609-') && !o.id.startsWith('DH-MOCK-')));
           if (cleaned.length !== data.orders.length) {
             data.orders = cleaned;
-            try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+            raw = JSON.stringify(data);
+            try { localStorage.setItem(key, raw); } catch {}
           }
         }
       }
@@ -50,16 +52,14 @@ window.MaccaAdmin = (() => {
   function commit(next) {
     if (loadError) throw new Error(loadError);
     if (!validState(next)) throw new Error('Dữ liệu không hợp lệ. Vui lòng kiểm tra lại các trường thông tin.');
-    let current;
-    try { current = localStorage.getItem(key); } catch { throw new Error('Trình duyệt đang chặn đọc dữ liệu. Chưa lưu thay đổi.'); }
-    if (current !== storageToken) {
-      reload();
-      throw new Error('Dữ liệu đã thay đổi ở tab khác. Hãy đóng biểu mẫu, tải lại trang và thực hiện lại.');
-    }
     const saved = clone(next);
-    saved.revision = snapshot.revision + 1;
+    saved.revision = (snapshot.revision || 0) + 1;
     const raw = JSON.stringify(saved);
-    try { localStorage.setItem(key, raw); } catch { throw new Error('Không thể lưu dữ liệu. Bộ nhớ có thể đã đầy hoặc bị chặn. Chưa lưu thay đổi.'); }
+    try { 
+      localStorage.setItem(key, raw); 
+    } catch { 
+      throw new Error('Không thể lưu dữ liệu. Bộ nhớ có thể đã đầy hoặc bị chặn. Chưa lưu thay đổi.'); 
+    }
     snapshot = saved;
     storageToken = raw;
     return clone(snapshot);

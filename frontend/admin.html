@@ -4,20 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#243f30">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Quản trị — Macca Toàn Thắng</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css?v=20261004e">
-  <script src="js/api-client.js?v=20261004e" defer></script>
-  <script src="js/request-api.js?v=20261004e" defer></script>
-  <script src="js/admin-auth.js?v=20261004e" defer></script>
-  <script src="js/store.js?v=20261004e" defer></script>
-  <script src="js/journal-data.js?v=20261004e" defer></script>
-  <script src="js/admin-data.js?v=20261004e" defer></script>
-  <script src="js/admin.js?v=20261004e" defer></script>
-  <script src="js/admin-inbox.js?v=20261004e" defer></script>
+  <script>
+    (function() {
+      try {
+        var ak = 'macca-toan-thang-admin-v1';
+        var ad = localStorage.getItem(ak);
+        if (ad) {
+          var ap = JSON.parse(ad);
+          if (ap && Array.isArray(ap.orders)) {
+            ap.orders = ap.orders.filter(function(o) { return !o.id || (!o.id.startsWith('DH-2609-') && !o.id.startsWith('DH-MOCK-')); });
+            localStorage.setItem(ak, JSON.stringify(ap));
+          }
+        }
+        var ik = 'macca-client-requests';
+        var id = localStorage.getItem(ik);
+        if (id) {
+          var ip = JSON.parse(id);
+          if (Array.isArray(ip)) {
+            var cl = ip.filter(function(r) { return !r.id || (!r.id.startsWith('YC-TV-2026-00') && !r.id.startsWith('YC-LN-2026-00')); });
+            localStorage.setItem(ik, JSON.stringify(cl));
+          }
+        }
+      } catch(e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/admin.css?v=20261005_v3">
+  <script src="js/api-client.js?v=20261005_v3" defer></script>
+  <script src="js/request-api.js?v=20261005_v3" defer></script>
+  <script src="js/admin-auth.js?v=20261005_v3" defer></script>
+  <script src="js/store.js?v=20261005_v3" defer></script>
+  <script src="js/journal-data.js?v=20261005_v3" defer></script>
+  <script src="js/admin-data.js?v=20261005_v3" defer></script>
+  <script src="js/admin.js?v=20261005_v3" defer></script>
+  <script src="js/admin-inbox.js?v=20261005_v3" defer></script>
 </head>
 <body>
   <section id="admin-login-screen" class="admin-login-screen" aria-labelledby="admin-login-title" hidden>

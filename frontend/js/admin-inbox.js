@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 (() => {
   const $ = selector => document.querySelector(selector);
   const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
@@ -21,59 +21,7 @@
 
   const STORAGE_KEY = 'macca-client-requests';
 
-  const DEFAULT_REQUESTS = [
-    {
-      id: 'YC-TV-2026-001',
-      type: 'consult',
-      topic: 'Tư vấn quà tặng doanh nghiệp cuối năm',
-      status: 'new',
-      revision: 1,
-      createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-      customer: {
-        name: 'Trần Thị Mai',
-        phone: '0987654321',
-        email: 'mai.tran@company.vn'
-      },
-      details: {
-        company: 'Công ty Công Nghệ Á Châu',
-        quantity: 50,
-        budget: '500.000đ - 1.000.000đ / phần'
-      },
-      message: 'Tôi muốn đặt 50 hộp quà macca tặng đối tác dịp kỷ niệm thành lập, nhờ shop tư vấn thiết kế thiệp chúc mừng và báo giá chiết khấu doanh nghiệp.'
-    },
-    {
-      id: 'YC-LN-2026-002',
-      type: 'contact',
-      topic: 'Lời nhắn: Hợp tác đại lý phân phối',
-      status: 'processing',
-      revision: 1,
-      createdAt: new Date(Date.now() - 3600000 * 20).toISOString(),
-      customer: {
-        name: 'Lê Hoàng Long',
-        phone: '0903123456',
-        email: 'long.le@dalatstore.com'
-      },
-      message: 'Chào anh/chị, tôi muốn phân phối sản phẩm Macca Toàn Thắng tại chuỗi cửa hàng nông sản sạch tại Đà Lạt. Vui lòng gửi chính sách đại lý và bảng giá sỉ qua email.'
-    },
-    {
-      id: 'YC-TV-2026-003',
-      type: 'consult',
-      topic: 'Tư vấn chế độ dinh dưỡng cho người lớn tuổi',
-      status: 'completed',
-      revision: 1,
-      createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
-      customer: {
-        name: 'Nguyễn Thị Bích',
-        phone: '0918765432',
-        email: 'bichnguyen@outlook.com'
-      },
-      details: {
-        purpose: 'Chăm sóc sức khỏe gia đình',
-        preference: 'Macca sấy mộc nguyên chất'
-      },
-      message: 'Mẹ mình bị tiểu đường, muốn mua macca sấy mộc nguyên vị không đường muối. Nhờ shop hướng dẫn khẩu phần dùng mỗi ngày tốt nhất.'
-    }
-  ];
+  const DEFAULT_REQUESTS = [];
 
   function getLocalRequests() {
     try {
@@ -81,24 +29,27 @@
       if (raw) {
         // Tự động làm sạch nếu phát hiện dữ liệu cũ bị lỗi font / mojibake
         if (/[\uFFFD]|Ã[¡\s]|áº|á»|Ä‘/.test(raw)) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_REQUESTS));
-          return DEFAULT_REQUESTS;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+          return [];
         }
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          // Lọc bỏ yêu cầu loại order nếu có lẫn từ trước, đảm bảo CHỈ CÓ consult và contact
-          const filtered = parsed.filter(item => item.type === 'consult' || item.type === 'contact');
-          if (filtered.length > 0) return filtered;
+        if (Array.isArray(parsed)) {
+          // Lọc bỏ yêu cầu mẫu cũ nếu còn tồn đọng trong localStorage
+          const filtered = parsed.filter(item => 
+            (item.type === 'consult' || item.type === 'contact') &&
+            !item.id?.startsWith('YC-TV-2026-00') &&
+            !item.id?.startsWith('YC-LN-2026-00')
+          );
+          if (filtered.length !== parsed.length) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+          }
+          return filtered;
         }
       }
     } catch (e) {
       console.error('Lỗi đọc local requests:', e);
     }
-    // Lưu danh sách mặc định sạch
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_REQUESTS));
-    } catch {}
-    return DEFAULT_REQUESTS;
+    return [];
   }
 
   function saveLocalRequests(list) {
@@ -215,7 +166,7 @@
         try {
           const res = await window.MaccaApi.request('/api/admin/requests?limit=100', { auth: true });
           const items = Array.isArray(res?.items) ? res.items : (Array.isArray(res) ? res : null);
-          if (items && items.length > 0) {
+          if (items !== null) {
             requests = items.map(r => ({
               id: r.id,
               type: typeof r.type === 'string' ? r.type.toLowerCase() : 'consult',
@@ -234,7 +185,7 @@
             }));
             saveLocalRequests(requests);
             render();
-            if (showFeedback) toast('Da cap nhat: ' + requests.length + ' yeu cau.');
+            if (showFeedback) toast('Đã cập nhật: ' + requests.length + ' yêu cầu.');
             return;
           }
         } catch (err) {

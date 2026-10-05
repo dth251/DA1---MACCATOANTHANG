@@ -9,4 +9,15 @@ nginx/certs/
 # ── OS & Editor ───────────────────────────────────────────────
 .DS_Store
 Thumbs.db
-.vscode/settings.json
+.idea/
+*.iml
+.vscode/
+!.vscode/tasks.json
+
+# ── Build & Cache ─────────────────────────────────────────────
+backend/build/
+backend/target/
+backend/.gradle/
+backend/.gradle-user-home/
+backend/.test-postgres/
+*.log
